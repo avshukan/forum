@@ -3,11 +3,9 @@
  * @returns { Promise<void> }
  */
 exports.up = function (knex) {
-    return knex.schema.createTable("posts", table => {
+    return knex.schema.createTable("users", table => {
         table.increments('id');
-        table.integer('user_id').notNullable();
-        table.string('header', 100).notNullable();
-        table.string('text', 255).notNullable();
+        table.string('username', 20).notNullable();
         table.timestamps(true, true);
     });
 };
@@ -17,5 +15,5 @@ exports.up = function (knex) {
  * @returns { Promise<void> }
  */
 exports.down = function (knex) {
-    return knex.schema.dropTableIfExists("posts");
+    return knex.schema.dropTableIfExists("users");
 };
