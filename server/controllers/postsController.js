@@ -9,7 +9,6 @@ async function getPosts(request, _reply) {
             .filter(({ post_id }) => post.id === post_id)
             .filter(({ status }) => (status === 'actual' || post.user_id === userId))
     }));
-    console.log('this.db.context.client.config.client', this.db.context.client.config.client);
     if (this.db.context.client.config.client === 'sqlite3') {
         this.db.destroy();
     }
