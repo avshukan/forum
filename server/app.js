@@ -21,5 +21,5 @@ module.exports = async function (fastify, opts) {
   fastify.register(AutoLoad, {
     dir: path.join(__dirname, 'routes'),
     options: Object.assign({ prefix: '/api/v1' }, opts)
-  })
+  });
 }

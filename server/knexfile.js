@@ -1,6 +1,10 @@
 // Update with your config settings.
 require('dotenv').config();
 
+const migrations = {
+  directory: './migrations',
+};
+
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
@@ -15,9 +19,19 @@ module.exports = {
       user: process.env.POSTGRES_USERNAME,
       password: process.env.POSTGRES_PASSWORD,
     },
-    migrations: {
-      directory: './migrations',
+    migrations,
+  },
+
+  test: {
+    client: 'sqlite3',
+    connection: ':memory:',
+    pool: {
+      afterCreate(conn, cb) {
+        conn.run('PRAGMA foreign_keys = ON', cb);
+      },
     },
+    useNullAsDefault: true,
+    migrations,
   },
 
   production: {
@@ -29,9 +43,7 @@ module.exports = {
       user: process.env.POSTGRES_USERNAME,
       password: process.env.POSTGRES_PASSWORD,
     },
-    migrations: {
-      directory: './migrations',
-    },
+    migrations,
   },
 
   // development: {
