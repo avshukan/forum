@@ -34,7 +34,8 @@
     "fastify-plugin": "^3.0.0",
     "knex": "^2.3.0",
     "pg": "^8.8.0",
-    "sqlite3": "^5.1.2"
+    "sqlite3": "^5.1.2",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "jest": "^29.2.0"

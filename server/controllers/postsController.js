@@ -1,18 +1,41 @@
-async function getPosts(request, _reply) {
+const yup = require('yup');
+
+async function getPosts(request, reply) {
+    const schema = yup.string()
+        .required('username is required')
+        .max(20, 'username max length is 20');
     const { username } = request.query;
-    const userId = await this.getUserId(username);
-    const posts = await this.db('posts');
-    const comments = await this.db('comments');
-    const result = posts.map((post) => ({
-        ...post,
-        comments: comments
-            .filter(({ post_id }) => post.id === post_id)
-            .filter(({ status }) => (status === 'actual' || post.user_id === userId))
-    }));
-    if (this.db.context.client.config.client === 'sqlite3') {
-        this.db.destroy();
+    if (!schema.isValidSync(username)) {
+        const error = await schema.validate(username).catch((error) => error);
+        const { message } = error;
+        reply
+            .code(400)
+            .send({
+                "error": "Invalid query",
+                "detail": { message }
+            });
+        return;
     }
-    return result;
+    try {
+        const userId = await this.getUserId(username);
+        const posts = await this.db('posts');
+        const comments = await this.db('comments');
+        const result = posts.map((post) => ({
+            ...post,
+            comments: comments
+                .filter(({ post_id }) => post.id === post_id)
+                .filter(({ status }) => (status === 'actual' || post.user_id === userId))
+        }));
+        reply.send(result);
+        return;
+    } catch (error) {
+        reply
+            .code(500)
+            .send({
+                "error": "server error",
+                "detail": error
+            });
+    }
 };
 
 async function createPost(request, _reply) {
