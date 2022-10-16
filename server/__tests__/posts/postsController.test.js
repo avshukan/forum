@@ -97,5 +97,16 @@ describe('postsController', () => {
             expect(payload.detail.message).toBe('username max length is 20');
         });
 
+        it('bad case: server error', async () => {
+            app.db = () => { throw new Error('test error') };
+            const request = { query: { username: 'Carol' } };
+            const reply = new ReplyBuilder();
+            await getPosts.call(app, request, reply);
+            const { statusCode, payload } = reply;
+            expect(statusCode).toBe(500);
+            expect(payload.error).toBe('server error');
+            expect(payload.detail.message).toBe('test error');
+        });
+
     });
 });
