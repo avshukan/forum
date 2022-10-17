@@ -38,13 +38,49 @@ async function getPosts(request, reply) {
     }
 };
 
-async function createPost(request, _reply) {
-    const { username, ...data } = request.body;
-    const userId = await this.getUserId(username);
-    const id = this.db('posts')
-        .returning('id')
-        .insert({ ...data, user_id: userId });
-    return id;
+async function createPost(request, reply) {
+    const schema = yup.object({
+        username: yup.string()
+            .required('username is required')
+            .max(20, 'username max length is 20'),
+        header: yup.string()
+            .required('header is required')
+            .max(100, 'header max length is 100'),
+        text: yup.string()
+            .required('text is required')
+            .max(255, 'text max length is 255'),
+
+    });
+    const { body } = request;
+    if (!schema.isValidSync(body)) {
+        const error = await schema.validate(body).catch((error) => error);
+        const { message } = error;
+        reply
+            .code(400)
+            .send({
+                "error": "Invalid query",
+                "detail": { message }
+            });
+        return;
+    }
+    try {
+        const { username, ...data } = request.body;
+        const userId = await this.getUserId(username);
+        const id = await this.db('posts')
+            .returning('id')
+            .insert({ ...data, user_id: userId });
+        reply
+            .code(201)
+            .send(id);
+        return;
+    } catch (error) {
+        reply
+            .code(500)
+            .send({
+                "error": "server error",
+                "detail": error
+            });
+    }
 };
 
 async function deletePost(request, _reply) {
