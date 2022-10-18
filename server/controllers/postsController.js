@@ -5,21 +5,17 @@ async function getPosts(request, reply) {
         .required('username is required')
         .max(20, 'username max length is 20');
     const { username } = request.query;
-
     if (!schema.isValidSync(username)) {
         const error = await schema.validate(username).catch((error) => error);
         const { message } = error;
-
         reply
             .code(400)
             .send({
                 "error": "Invalid query",
                 "detail": { message }
             });
-
         return;
     }
-
     try {
         const userId = await this.getUserId(username);
         const posts = await this.db('posts');
@@ -30,9 +26,7 @@ async function getPosts(request, reply) {
                 .filter(({ post_id }) => post.id === post_id)
                 .filter(({ status }) => (status === 'actual' || post.user_id === userId))
         }));
-
         reply.send(result);
-
         return;
     } catch (error) {
         reply
