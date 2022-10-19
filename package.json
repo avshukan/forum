@@ -1,0 +1,20 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "demo project",
+  "main": "index.js",
+  "scripts": {
+    "lint": "cd server && npm run lint",
+    "test": "cd server && npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avshukan/demo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/avshukan/demo/issues"
+  },
+  "homepage": "https://github.com/avshukan/demo#readme"
+}
