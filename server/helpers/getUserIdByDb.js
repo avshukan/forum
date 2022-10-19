@@ -1,11 +1,9 @@
-'use strict';
-
 const getUserIdByDb = (db) => async (username) => {
   const user = await db('users')
     .where('username', username)
     .first();
 
-  if (!!user) {
+  if (user) {
     return user.id;
   }
 

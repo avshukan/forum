@@ -1,4 +1,3 @@
-'use strict';
 const postsController = require('../../controllers/postsController');
 
 module.exports = async function (fastify, _opts) {
