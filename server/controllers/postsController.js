@@ -29,7 +29,7 @@ async function getPosts(request, reply) {
     const result = posts.map((post) => ({
       ...post,
       comments: comments
-        .filter(({ post_id }) => post.id === post_id)
+        .filter(({ post_id: postId }) => post.id === postId)
         .filter(({ status }) => (status === 'actual' || post.user_id === userId)),
     }));
 
@@ -102,18 +102,17 @@ async function deletePost(request, reply) {
   const { username } = request.body;
 
   try {
-    schema = yup
-      .object({
-        postId: yup
-          .number('postId must be a `number` type')
-          .required('postId is required')
-          .integer('postId have to be integer')
-          .positive('postId have to be positive'),
-        username: yup
-          .string()
-          .required('username is required')
-          .max(20, 'username max length is 20'),
-      })
+    yup.object({
+      postId: yup
+        .number('postId must be a `number` type')
+        .required('postId is required')
+        .integer('postId have to be integer')
+        .positive('postId have to be positive'),
+      username: yup
+        .string()
+        .required('username is required')
+        .max(20, 'username max length is 20'),
+    })
       .validateSync({ postId, username });
   } catch ({ message }) {
     reply
@@ -170,21 +169,20 @@ async function createComment(request, reply) {
   const { username, text } = request.body;
 
   try {
-    schema = yup
-      .object({
-        postId: yup
-          .number('postId must be a `number` type')
-          .required('postId is required')
-          .integer('postId have to be integer')
-          .positive('postId have to be positive'),
-        username: yup
-          .string()
-          .required('username is required')
-          .max(20, 'username max length is 20'),
-        text: yup.string()
-          .required('text is required')
-          .max(255, 'text max length is 255'),
-      })
+    yup.object({
+      postId: yup
+        .number('postId must be a `number` type')
+        .required('postId is required')
+        .integer('postId have to be integer')
+        .positive('postId have to be positive'),
+      username: yup
+        .string()
+        .required('username is required')
+        .max(20, 'username max length is 20'),
+      text: yup.string()
+        .required('text is required')
+        .max(255, 'text max length is 255'),
+    })
       .validateSync({ postId, username, text });
   } catch ({ message }) {
     reply
@@ -220,7 +218,7 @@ async function createComment(request, reply) {
       .code(201)
       .send(id);
 
-    return id;
+    return;
   } catch (error) {
     reply
       .code(500)
@@ -236,23 +234,22 @@ async function deleteComment(request, reply) {
   const { username } = request.body;
 
   try {
-    schema = yup
-      .object({
-        postId: yup
-          .number('postId must be a `number` type')
-          .required('postId is required')
-          .integer('postId have to be integer')
-          .positive('postId have to be positive'),
-        commentId: yup
-          .number('commentId must be a `number` type')
-          .required('commentId is required')
-          .integer('commentId have to be integer')
-          .positive('commentId have to be positive'),
-        username: yup
-          .string()
-          .required('username is required')
-          .max(20, 'username max length is 20'),
-      })
+    yup.object({
+      postId: yup
+        .number('postId must be a `number` type')
+        .required('postId is required')
+        .integer('postId have to be integer')
+        .positive('postId have to be positive'),
+      commentId: yup
+        .number('commentId must be a `number` type')
+        .required('commentId is required')
+        .integer('commentId have to be integer')
+        .positive('commentId have to be positive'),
+      username: yup
+        .string()
+        .required('username is required')
+        .max(20, 'username max length is 20'),
+    })
       .validateSync({ postId, commentId, username });
   } catch ({ message }) {
     reply
@@ -292,7 +289,7 @@ async function deleteComment(request, reply) {
       return;
     }
 
-    const x = await this.db('comments')
+    await this.db('comments')
       .where({ id: commentId, post_id: postId, user_id: userId })
       .update({ status: 'deleted' });
 

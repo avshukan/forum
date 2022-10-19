@@ -1,3 +1,3 @@
-module.exports = async function (fastify, opts) {
-  fastify.get('/', async (request, reply) => 'this is an example');
+module.exports = async function (fastify, _opts) {
+  fastify.get('/', async (_request, _reply) => 'this is an example');
 };

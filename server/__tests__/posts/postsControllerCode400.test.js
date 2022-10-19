@@ -6,6 +6,8 @@ const {
   getPosts, createPost, deletePost, createComment, deleteComment,
 } = require('../../controllers/postsController');
 
+const app = {};
+
 const badRequestCases = [
   {
     name: 'getPosts',
@@ -243,8 +245,6 @@ const badRequestHandler = async ({
   expect(postsAfter.length).toBe(postsBefore.length);
   expect(commentsAfter.length).toBe(commentsBefore.length);
 };
-
-const app = {};
 
 beforeEach(async () => {
   const db = knex(knexfile.test);
