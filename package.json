@@ -4,6 +4,9 @@
   "description": "demo project",
   "main": "index.js",
   "scripts": {
+    "start": "npm run start-backend && npm run start-frontend",
+    "start-backend": "cd server && npm run start",
+    "start-frontend": "cd client && npm run start",
     "lint": "cd server && npm run lint",
     "test": "cd server && npm run test"
   },
