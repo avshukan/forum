@@ -2,4 +2,4 @@ start:
 	npm start
 
 lint:
-	npx eslint . --fix
+	npx eslint --no-eslintrc --config .eslintrc.json --ext .js,.jsx . --fix
