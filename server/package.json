@@ -28,6 +28,7 @@
   "homepage": "https://github.com/avshukan/demo#readme",
   "dependencies": {
     "@fastify/autoload": "^5.0.0",
+    "@fastify/cors": "^8.1.0",
     "@fastify/sensible": "^4.1.0",
     "dotenv": "^16.0.3",
     "fastify": "^4.0.0",

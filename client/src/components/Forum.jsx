@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
 function Forum() {
+  const [state, setState] = useState({});
+
+  const refreshPosts = async () => {
+    const posts = await fetch('http://localhost:5000/api/v1/posts?username=Alice');
+    console.log('posts', posts);
+    setState({ ...state, posts });
+  };
+
+  useEffect(() => {
+    refreshPosts();
+  }, []);
+
   return (
     <Container className="h-100 my-4 overflow-hidden rounded shadow">
       <Row className="p-0 h-100">
