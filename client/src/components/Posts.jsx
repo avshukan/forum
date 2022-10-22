@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import Post from './Post';
 
 function Posts({ posts, refreshPosts }) {
@@ -7,7 +8,7 @@ function Posts({ posts, refreshPosts }) {
     <>
       <hr />
       <div className="overflow-auto">
-        {posts.map((post) => <Post post={post} refreshPosts={refreshPosts} />)}
+        {_.reverse(_.sortBy(posts, ['created_at'])).map((post) => <Post post={post} refreshPosts={refreshPosts} />)}
       </div>
     </>
   );

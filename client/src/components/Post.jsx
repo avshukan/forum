@@ -1,17 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container, Row, Col } from 'react-bootstrap';
+import moment from 'moment';
 
 function Post({ post, refreshPosts }) {
   const {
-    username, header, text, created_at, comments,
+    username, header, text, created_at: createdAt, comments,
   } = post;
+
+  const createdAtDate = moment(createdAt);
+
   return (
-    <div className="ml-4 mt-4 pl-4 pt-4">
-      <p>{username}</p>
-      <p>{header}</p>
+    <div className="me-3 mb-3 ps-3 pt-3">
+      <h4 className="fw-bold">
+        {header}
+        (
+        {username}
+        {' '}
+        <span style={{ fontSize: 'smaller' }}>{createdAtDate.fromNow()}</span>
+        )
+      </h4>
       <p>{text}</p>
-      <p>{created_at}</p>
       <p>{JSON.stringify(comments)}</p>
     </div>
   );
