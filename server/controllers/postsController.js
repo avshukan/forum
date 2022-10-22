@@ -1,4 +1,5 @@
 const yup = require('yup');
+const getUsernameById = require('../helpers/getUsernameById');
 
 async function getPosts(request, reply) {
   const { username } = request.query;
@@ -24,13 +25,21 @@ async function getPosts(request, reply) {
 
   try {
     const userId = await this.getUserId(username);
+    const users = await this.db('users');
     const posts = await this.db('posts');
     const comments = await this.db('comments');
-    const result = posts.map((post) => ({
+    const result = posts.map(({ user_id: postUserId, ...post }) => ({
       ...post,
+      user_id: postUserId,
+      username: getUsernameById(users, postUserId),
       comments: comments
         .filter(({ post_id: postId }) => post.id === postId)
-        .filter(({ status }) => (status === 'actual' || post.user_id === userId)),
+        .filter(({ status }) => (status === 'actual' || postUserId === userId))
+        .map(({ user_id: commentUserId, ...comment }) => ({
+          ...comment,
+          user_id: commentUserId,
+          username: getUsernameById(users, commentUserId),
+        })),
     }));
 
     reply
