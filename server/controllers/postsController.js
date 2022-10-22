@@ -241,7 +241,7 @@ async function createComment(request, reply) {
 async function deleteComment(request, reply) {
   const { postId, commentId } = request.params;
   const { username } = request.body;
-
+  console.log('{ postId, commentId, username }', { postId, commentId, username })
   try {
     yup.object({
       postId: yup
