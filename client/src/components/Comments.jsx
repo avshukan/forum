@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Commenter from './Commenter';
+import Comment from './Comment';
 
 function Comments({ postId, comments, refreshPosts }) {
   return (
     <div className="ms-5">
       <Commenter postId={postId} refreshPosts={refreshPosts} />
-      {_.reverse(_.sortBy(comments, ['created_at'])).map((comment) => <div id={comment.id}>{JSON.stringify(comment)}</div>)}
+      {_.reverse(_.sortBy(comments, ['created_at'])).map((comment) => <Comment key={comment.id} comment={comment} refreshPosts={refreshPosts} />)}
     </div>
   );
 }

@@ -32,12 +32,10 @@ function Commenter({ postId, refreshPosts }) {
       <Form onSubmit={onSubmit}>
         <Row className="align-items-center">
           <Col xs="auto">
-            <Form.Label htmlFor="inlineFormInput" visuallyHidden>
-              Name
-            </Form.Label>
+            <Form.Label htmlFor="comment" visuallyHidden>Comment</Form.Label>
             <Form.Control
               className="mb-2"
-              id="inlineFormInput"
+              id="comment"
               placeholder="comment"
               aria-label="text"
               aria-describedby="text"
