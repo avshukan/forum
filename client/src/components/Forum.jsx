@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import Poster from './Poster';
+import Posts from './Posts';
 
 function Forum() {
-  const [state, setState] = useState({});
+  const [state, setState] = useState({ posts: [] });
 
   const refreshPosts = async () => {
     const response = await fetch('http://localhost:5000/api/v1/posts?username=Alice');
@@ -24,18 +25,7 @@ function Forum() {
         <Col className="p-0 h-100">
           <div className="d-flex flex-column h-100">
             <Poster refreshPosts={refreshPosts} />
-            <div className="overflow-auto">
-              <div className="m-4 p-4">xxx</div>
-              <div className="m-4 p-4">xxx</div>
-              <div className="m-4 p-4">xxx</div>
-              <div className="m-4 p-4">xxx</div>
-              <div className="m-4 p-4">xxx</div>
-              <div className="m-4 p-4">xxx</div>
-              <div className="m-4 p-4">xxx</div>
-              <div className="m-4 p-4">xxx</div>
-              <div className="m-4 p-4">xxx</div>
-            </div>
-            <h1>BYE</h1>
+            <Posts posts={state.posts} />
           </div>
         </Col>
       </Row>
