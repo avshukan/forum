@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import Comments from './Comments';
 
 function Post({ post, refreshPosts }) {
   const {
@@ -11,16 +12,17 @@ function Post({ post, refreshPosts }) {
 
   return (
     <div className="me-3 mb-3 ps-3 pt-3">
-      <h4 className="fw-bold">
-        {header}
+      <div className='d-inline'>
+        <h4 className="d-inline fw-bold">{header}</h4>
+        {' '}
         (
         {username}
         {' '}
         <span style={{ fontSize: 'smaller' }}>{createdAtDate.fromNow()}</span>
         )
-      </h4>
+      </div>
       <p>{text}</p>
-      <p>{JSON.stringify(comments)}</p>
+      <Comments comments={comments} refreshPosts={refreshPosts} />
     </div>
   );
 }
