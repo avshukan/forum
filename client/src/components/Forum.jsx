@@ -25,7 +25,7 @@ function Forum() {
         <Col className="p-0 h-100">
           <div className="d-flex flex-column h-100">
             <Poster refreshPosts={refreshPosts} />
-            <Posts posts={state.posts} />
+            <Posts posts={state.posts} refreshPosts={refreshPosts} />
           </div>
         </Col>
       </Row>

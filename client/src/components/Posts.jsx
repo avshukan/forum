@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Post from './Post';
 
-function Posts({ posts }) {
+function Posts({ posts, refreshPosts }) {
   return (
     <>
       <hr />
       <div className="overflow-auto">
-        {posts.map((post) => <div className="m-4 p-4">{post.text}</div>)}
+        {posts.map((post) => <Post post={post} refreshPosts={refreshPosts} />)}
       </div>
     </>
   );
@@ -14,8 +15,12 @@ function Posts({ posts }) {
 
 Posts.propTypes = {
   posts: PropTypes.arrayOf(PropTypes.func),
+  refreshPosts: PropTypes.func,
 };
 
-Posts.defaultProps = [];
+Posts.defaultProps = {
+  posts: [],
+  refreshPosts: () => { },
+};
 
 export default Posts;
