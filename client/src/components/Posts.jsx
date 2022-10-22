@@ -8,7 +8,7 @@ function Posts({ posts, refreshPosts }) {
     <>
       <hr />
       <div className="overflow-auto">
-        {_.reverse(_.sortBy(posts, ['created_at'])).map((post) => <Post post={post} refreshPosts={refreshPosts} />)}
+        {_.reverse(_.sortBy(posts, ['created_at'])).map((post) => <Post key={post.id} post={post} refreshPosts={refreshPosts} />)}
       </div>
     </>
   );
