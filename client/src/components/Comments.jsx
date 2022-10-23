@@ -15,13 +15,21 @@ function Comments({ postId, comments, refreshPosts }) {
 
 Comments.propTypes = {
   postId: PropTypes.number,
-  comments: PropTypes.arrayOf(PropTypes.func),
+  comments: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      post_id: PropTypes.number,
+      username: PropTypes.string,
+      text: PropTypes.string,
+      created_at: PropTypes.string,
+    }),
+  ),
   refreshPosts: PropTypes.func,
 };
 
 Comments.defaultProps = {
   postId: 0,
-  comments: [],
+  comments: [{}],
   refreshPosts: () => { },
 };
 

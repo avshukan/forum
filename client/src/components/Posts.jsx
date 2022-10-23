@@ -15,12 +15,31 @@ function Posts({ posts, refreshPosts }) {
 }
 
 Posts.propTypes = {
-  posts: PropTypes.arrayOf(PropTypes.func),
+  posts: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    username: PropTypes.string,
+    header: PropTypes.string,
+    text: PropTypes.string,
+    created_at: PropTypes.string,
+    comments: PropTypes.arrayOf(PropTypes.shape({
+      postId: PropTypes.number,
+      comments: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          post_id: PropTypes.number,
+          username: PropTypes.string,
+          text: PropTypes.string,
+          created_at: PropTypes.string,
+        }),
+      ),
+      refreshPosts: PropTypes.func,
+    })),
+  })),
   refreshPosts: PropTypes.func,
 };
 
 Posts.defaultProps = {
-  posts: [],
+  posts: [{}],
   refreshPosts: () => { },
 };
 

@@ -24,9 +24,12 @@ function Comment({ comment, refreshPosts }) {
   })
     .then((response) => {
       console.log('response.status', response.status);
-      response.json();
+      return response.json();
     })
-    .then(() => refreshPosts())
+    .then((data) => {
+      console.log('data', data);
+      refreshPosts();
+    })
     .catch((error) => console.log(error));
 
   return (
@@ -45,7 +48,7 @@ function Comment({ comment, refreshPosts }) {
         <Col xs="1">
           <Button variant="danger" onClick={onDelete}>
             {/* <FontAwesomeIcon icon={faTrash} /> */}
-            <FontAwesomeIcon icon={faTrash} color="white" />
+            <FontAwesomeIcon icon={faTrash} size="xs" color="white" />
           </Button>
         </Col>
       </Row>

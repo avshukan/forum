@@ -25,10 +25,10 @@ function AuthProvider({ children }) {
 }
 
 AuthProvider.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.func),
+  children: PropTypes.shape({}),
 };
 
-AuthProvider.defaultProps = [];
+AuthProvider.defaultProps = () => { };
 
 export const useAuth = () => useContext(AuthContext);
 
