@@ -17,6 +17,12 @@ function Forum() {
 
   useEffect(() => {
     refreshPosts();
+
+    const intervalId = setInterval(() => {
+      refreshPosts();
+    }, 5000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   return (

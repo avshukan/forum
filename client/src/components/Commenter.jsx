@@ -31,11 +31,12 @@ function Commenter({ postId, refreshPosts }) {
     <Container style={{ textAlign: 'right' }}>
       <Form onSubmit={onSubmit}>
         <Row className="align-items-center">
-          <Col xs="auto">
+          <Col xs="auto" style={{ flexGrow: 1 }}>
             <Form.Label htmlFor="comment" visuallyHidden>Comment</Form.Label>
             <Form.Control
-              className="mb-2"
               id="comment"
+              className="mb-2"
+              style={{ flexGrow: 1 }}
               placeholder="comment"
               aria-label="text"
               aria-describedby="text"

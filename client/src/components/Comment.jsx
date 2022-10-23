@@ -17,6 +17,8 @@ function Comment({ comment, refreshPosts }) {
 
   const createdAtDate = moment(createdAt);
 
+  const canDelete = () => username === usernameComment;
+
   const onDelete = () => fetch(`http://localhost:5000/api/v1/posts/${postId}/comments/${id}`, {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json;charset=utf-8' },
@@ -42,7 +44,7 @@ function Comment({ comment, refreshPosts }) {
           </div>
         </Col>
         <Col xs="1">
-          <Button variant="danger" onClick={onDelete}>
+          <Button variant="danger" onClick={onDelete} disabled={!canDelete()}>
             {/* <FontAwesomeIcon icon={faTrash} /> */}
             <FontAwesomeIcon icon={faTrash} size="xs" color="white" />
           </Button>

@@ -18,6 +18,8 @@ function Post({ post, refreshPosts }) {
 
   const createdAtDate = moment(createdAt);
 
+  const canDelete = () => username === usernamePost;
+
   const onDelete = () => fetch(`http://localhost:5000/api/v1/posts/${id}`, {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json;charset=utf-8' },
@@ -45,7 +47,7 @@ function Post({ post, refreshPosts }) {
           <p>{text}</p>
         </Col>
         <Col xs="1">
-          <Button variant="danger" onClick={onDelete}>
+          <Button variant="danger" onClick={onDelete} disabled={!canDelete()}>
             {/* <FontAwesomeIcon icon={faTrash} /> */}
             <FontAwesomeIcon icon={faTrash} color="white" />
           </Button>

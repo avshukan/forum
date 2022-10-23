@@ -7,7 +7,8 @@ function Posts({ posts, refreshPosts }) {
   return (
     <>
       <hr />
-      <div className="overflow-auto">
+      {/* <div className="overflow-auto"> */}
+      <div style={{ overflowX: 'hidden', overflowY: 'auto' }}>
         {_.reverse(_.sortBy(posts, ['created_at'])).map((post) => <Post key={post.id} post={post} refreshPosts={refreshPosts} />)}
       </div>
     </>
