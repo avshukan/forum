@@ -10,20 +10,30 @@ function Commenter({ postId, refreshPosts }) {
 
   const [text, setText] = useState('');
 
+  const canComment = () => !!username;
+
   const onChangeText = (event) => {
     setText(event.target.value);
   };
 
   const onSubmit = async (event) => {
     event.preventDefault();
+    if (!canComment()) {
+      return;
+    }
+
     const response = await fetch(`http://localhost:5000/api/v1/posts/${postId}/comments`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json;charset=utf-8' },
       body: JSON.stringify({ username, text }),
     });
+    if (response.status === 201) {
+      setText('');
+    }
     const result = await response.json();
     console.log('response.status', response.status);
     console.log('result', result);
+
     await refreshPosts();
   };
 
@@ -45,7 +55,7 @@ function Commenter({ postId, refreshPosts }) {
             />
           </Col>
           <Col xs="auto">
-            <Button type="submit" className="mb-2">Comment</Button>
+            <Button type="submit" className="mb-2" disabled={!canComment()}>Comment</Button>
           </Col>
         </Row>
       </Form>

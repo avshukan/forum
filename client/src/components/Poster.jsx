@@ -12,6 +12,8 @@ function Poster({ refreshPosts }) {
 
   const [text, setText] = useState('');
 
+  const canPost = () => !!username;
+
   const onChangeHeader = (event) => {
     setHeader(event.target.value);
   };
@@ -22,14 +24,23 @@ function Poster({ refreshPosts }) {
 
   const onSubmit = async (event) => {
     event.preventDefault();
+    if (!canPost()) {
+      return;
+    }
+
     const response = await fetch('http://localhost:5000/api/v1/posts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json;charset=utf-8' },
       body: JSON.stringify({ username, header, text }),
     });
+    if (response.status === 201) {
+      setHeader('');
+      setText('');
+    }
     const result = await response.json();
     console.log('response.status', response.status);
     console.log('result', result);
+
     await refreshPosts();
   };
 
@@ -56,7 +67,7 @@ function Poster({ refreshPosts }) {
             onChange={onChangeText}
           />
         </InputGroup>
-        <Button variant="primary" type="submit" className="ml-auto">Send</Button>
+        <Button variant="primary" type="submit" className="ml-auto" disabled={!canPost()}>Send</Button>
       </Form>
     </Container>
   );
