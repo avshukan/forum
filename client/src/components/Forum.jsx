@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import backendRoutes from '../routes/backendRoutes';
 import Poster from './Poster';
 import Posts from './Posts';
 
@@ -7,7 +8,8 @@ function Forum() {
   const [state, setState] = useState({ posts: [] });
 
   const refreshPosts = async () => {
-    const response = await fetch('http://localhost:5000/api/v1/posts?username=Alice');
+    const url = backendRoutes.posts({ username: 'Alice' });
+    const response = await fetch(url.href);
     const posts = await response.json();
     console.log('response.status', response.status);
     console.log('posts', posts);
@@ -20,7 +22,7 @@ function Forum() {
 
     const intervalId = setInterval(() => {
       refreshPosts();
-    }, 5000);
+    }, 20000);
 
     return () => clearInterval(intervalId);
   }, []);

@@ -6,6 +6,7 @@ import {
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import backendRoutes from '../routes/backendRoutes';
 import Comments from './Comments';
 import { useAuth } from '../contexts/AuthProvider';
 
@@ -20,7 +21,7 @@ function Post({ post, refreshPosts }) {
 
   const canDelete = () => username === usernamePost;
 
-  const onDelete = () => fetch(`http://localhost:5000/api/v1/posts/${id}`, {
+  const onDelete = () => fetch(backendRoutes.post(id).href, {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json;charset=utf-8' },
     body: JSON.stringify({ username }),

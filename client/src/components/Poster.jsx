@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Container, Form, Button, InputGroup,
 } from 'react-bootstrap';
+import backendRoutes from '../routes/backendRoutes';
 import { useAuth } from '../contexts/AuthProvider';
 
 function Poster({ refreshPosts }) {
@@ -28,7 +29,7 @@ function Poster({ refreshPosts }) {
       return;
     }
 
-    const response = await fetch('http://localhost:5000/api/v1/posts', {
+    const response = await fetch(backendRoutes.posts().href, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json;charset=utf-8' },
       body: JSON.stringify({ username, header, text }),

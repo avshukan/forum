@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Container, Form, Button, Row, Col,
 } from 'react-bootstrap';
+import backendRoutes from '../routes/backendRoutes';
 import { useAuth } from '../contexts/AuthProvider';
 
 function Commenter({ postId, refreshPosts }) {
@@ -22,7 +23,7 @@ function Commenter({ postId, refreshPosts }) {
       return;
     }
 
-    const response = await fetch(`http://localhost:5000/api/v1/posts/${postId}/comments`, {
+    const response = await fetch(backendRoutes.comments(postId).href, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json;charset=utf-8' },
       body: JSON.stringify({ username, text }),
