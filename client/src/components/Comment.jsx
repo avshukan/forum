@@ -1,18 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import moment from 'moment';
 import {
   Button, Container, Row, Col,
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import backendRoutes from '../routes/backendRoutes';
 import { useAuth } from '../contexts/AuthProvider';
+import { deleteComment } from '../api';
+import fetchDataThunk from '../slices/fetchDataThunk';
 
-function Comment({ comment, refreshPosts }) {
+function Comment({ comment }) {
   const {
     id, post_id: postId, username: usernameComment, text, created_at: createdAt,
   } = comment;
+
+  const dispatch = useDispatch();
 
   const { username } = useAuth();
 
@@ -20,16 +24,12 @@ function Comment({ comment, refreshPosts }) {
 
   const canDelete = () => username === usernameComment;
 
-  const onDelete = () => fetch(backendRoutes.comment(postId, id).href, {
-    method: 'DELETE',
-    headers: { 'Content-Type': 'application/json;charset=utf-8' },
-    body: JSON.stringify({ username }),
-  })
+  const onDelete = () => deleteComment({ username, postId, commentId: id })
     .then((response) => {
-      console.log('response.status', response.status);
-      refreshPosts();
-    })
-    .catch((error) => console.log(error));
+      if (response.status === 204) {
+        dispatch(fetchDataThunk(username));
+      }
+    });
 
   return (
     <Container className="me-3 mb-3 ps-3 pt-3">
@@ -63,12 +63,10 @@ Comment.propTypes = {
     text: PropTypes.string,
     created_at: PropTypes.string,
   }),
-  refreshPosts: PropTypes.func,
 };
 
 Comment.defaultProps = {
   comment: {},
-  refreshPosts: () => { },
 };
 
 export default Comment;

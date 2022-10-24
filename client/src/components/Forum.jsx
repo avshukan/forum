@@ -1,28 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Container, Row, Col } from 'react-bootstrap';
-import backendRoutes from '../routes/backendRoutes';
 import Poster from './Poster';
 import Posts from './Posts';
+import { useAuth } from '../contexts/AuthProvider';
+import fetchDataThunk from '../slices/fetchDataThunk';
 
 function Forum() {
-  const [state, setState] = useState({ posts: [] });
+  const dispatch = useDispatch();
 
-  const refreshPosts = async () => {
-    const url = backendRoutes.posts({ username: 'Alice' });
-    const response = await fetch(url.href);
-    const posts = await response.json();
-    console.log('response.status', response.status);
-    console.log('posts', posts);
-    setState({ ...state, posts });
-    return posts;
-  };
+  const { username } = useAuth();
 
   useEffect(() => {
-    refreshPosts();
+    dispatch(fetchDataThunk({ username }));
 
     const intervalId = setInterval(() => {
-      refreshPosts();
-    }, 20000);
+      dispatch(fetchDataThunk({ username }));
+    }, 5000);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -32,8 +26,8 @@ function Forum() {
       <Row className="p-0 h-100">
         <Col className="p-0 h-100">
           <div className="d-flex flex-column h-100">
-            <Poster refreshPosts={refreshPosts} />
-            <Posts posts={state.posts} refreshPosts={refreshPosts} />
+            <Poster />
+            <Posts />
           </div>
         </Col>
       </Row>

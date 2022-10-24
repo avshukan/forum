@@ -4,11 +4,11 @@ import _ from 'lodash';
 import Commenter from './Commenter';
 import Comment from './Comment';
 
-function Comments({ postId, comments, refreshPosts }) {
+function Comments({ postId, comments }) {
   return (
     <div className="ms-5">
-      <Commenter postId={postId} refreshPosts={refreshPosts} />
-      {_.reverse(_.sortBy(comments, ['created_at'])).map((comment) => <Comment key={comment.id} comment={comment} refreshPosts={refreshPosts} />)}
+      <Commenter postId={postId} />
+      {_.reverse(_.sortBy(comments, ['created_at'])).map((comment) => <Comment key={comment.id} comment={comment} />)}
     </div>
   );
 }
@@ -24,13 +24,11 @@ Comments.propTypes = {
       created_at: PropTypes.string,
     }),
   ),
-  refreshPosts: PropTypes.func,
 };
 
 Comments.defaultProps = {
   postId: 0,
   comments: [{}],
-  refreshPosts: () => { },
 };
 
 export default Comments;

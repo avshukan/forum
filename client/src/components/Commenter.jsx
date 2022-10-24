@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import {
   Container, Form, Button, Row, Col,
 } from 'react-bootstrap';
-import backendRoutes from '../routes/backendRoutes';
+import { createComment } from '../api';
+import fetchDataThunk from '../slices/fetchDataThunk';
 import { useAuth } from '../contexts/AuthProvider';
 
-function Commenter({ postId, refreshPosts }) {
+// function Commenter({ postId, refreshPosts }) {
+function Commenter({ postId }) {
+  const dispatch = useDispatch();
+
   const { username } = useAuth();
 
   const [text, setText] = useState('');
@@ -23,19 +28,12 @@ function Commenter({ postId, refreshPosts }) {
       return;
     }
 
-    const response = await fetch(backendRoutes.comments(postId).href, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json;charset=utf-8' },
-      body: JSON.stringify({ username, text }),
-    });
+    const response = await createComment({ username, postId, text });
+
     if (response.status === 201) {
       setText('');
+      await dispatch(fetchDataThunk(username));
     }
-    const result = await response.json();
-    console.log('response.status', response.status);
-    console.log('result', result);
-
-    await refreshPosts();
   };
 
   return (
@@ -66,12 +64,10 @@ function Commenter({ postId, refreshPosts }) {
 
 Commenter.propTypes = {
   postId: PropTypes.number,
-  refreshPosts: PropTypes.func,
 };
 
 Commenter.defaultProps = {
   postId: 0,
-  refreshPosts: () => { },
 };
 
 export default Commenter;

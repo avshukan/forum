@@ -1,47 +1,25 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
 import _ from 'lodash';
 import Post from './Post';
+import fetchDataThunk from '../slices/fetchDataThunk';
+import { useAuth } from '../contexts/AuthProvider';
 
-function Posts({ posts, refreshPosts }) {
+function Posts() {
+  const dispatch = useDispatch();
+
+  const { username } = useAuth();
+
+  const { posts } = useSelector((state) => state.data);
+
   return (
     <>
       <hr />
-      {/* <div className="overflow-auto"> */}
       <div style={{ overflowX: 'hidden', overflowY: 'auto' }}>
-        {_.reverse(_.sortBy(posts, ['created_at'])).map((post) => <Post key={post.id} post={post} refreshPosts={refreshPosts} />)}
+        {_.reverse(_.sortBy(posts, ['created_at'])).map((post) => <Post key={post.id} post={post} refreshPosts={() => dispatch(fetchDataThunk({ username }))} />)}
       </div>
     </>
   );
 }
-
-Posts.propTypes = {
-  posts: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    username: PropTypes.string,
-    header: PropTypes.string,
-    text: PropTypes.string,
-    created_at: PropTypes.string,
-    comments: PropTypes.arrayOf(PropTypes.shape({
-      postId: PropTypes.number,
-      comments: PropTypes.arrayOf(
-        PropTypes.shape({
-          id: PropTypes.number,
-          post_id: PropTypes.number,
-          username: PropTypes.string,
-          text: PropTypes.string,
-          created_at: PropTypes.string,
-        }),
-      ),
-      refreshPosts: PropTypes.func,
-    })),
-  })),
-  refreshPosts: PropTypes.func,
-};
-
-Posts.defaultProps = {
-  posts: [{}],
-  refreshPosts: () => { },
-};
 
 export default Posts;

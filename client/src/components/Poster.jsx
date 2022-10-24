@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import {
   Container, Form, Button, InputGroup,
 } from 'react-bootstrap';
-import backendRoutes from '../routes/backendRoutes';
+import { createPost } from '../api';
+import fetchDataThunk from '../slices/fetchDataThunk';
 import { useAuth } from '../contexts/AuthProvider';
 
-function Poster({ refreshPosts }) {
+function Poster() {
+  const dispatch = useDispatch();
+
   const { username } = useAuth();
 
   const [header, setHeader] = useState('');
@@ -29,20 +32,12 @@ function Poster({ refreshPosts }) {
       return;
     }
 
-    const response = await fetch(backendRoutes.posts().href, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json;charset=utf-8' },
-      body: JSON.stringify({ username, header, text }),
-    });
+    const response = await createPost({ username, header, text });
     if (response.status === 201) {
       setHeader('');
       setText('');
+      await dispatch(fetchDataThunk(username));
     }
-    const result = await response.json();
-    console.log('response.status', response.status);
-    console.log('result', result);
-
-    await refreshPosts();
   };
 
   return (
@@ -73,11 +68,5 @@ function Poster({ refreshPosts }) {
     </Container>
   );
 }
-
-Poster.propTypes = {
-  refreshPosts: PropTypes.func,
-};
-
-Poster.defaultProps = () => { };
 
 export default Poster;

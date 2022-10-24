@@ -13,10 +13,7 @@ function LogButton() {
 
   const [editMode, setEditMode] = useState(false);
 
-  const onLogInClick = () => {
-    setEditMode(true);
-    ref.current.focus();
-  };
+  const onLogInClick = () => setEditMode(true);
 
   const logOutButton = <Button onClick={() => logOut()}>LogOut</Button>;
 
