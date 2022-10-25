@@ -1,6 +1,5 @@
-const url = 'api/v1/';
-const base = 'http://localhost:5000/';
-const baseUrl = new URL(url, base);
+const { REACT_APP_API_URL, REACT_APP_API_BASE } = process.env;
+const baseUrl = new URL(REACT_APP_API_URL, REACT_APP_API_BASE);
 
 export const getPosts = (username) => {
   const resultUrl = new URL('posts', baseUrl);
