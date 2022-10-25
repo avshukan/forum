@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
+import _ from 'lodash';
 import fetchDataThunk from './fetchDataThunk';
 
 const initialState = {
@@ -17,7 +18,10 @@ const dataSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchDataThunk.fulfilled, (state, action) => {
-        state.posts = [...action.payload];
+        const { payload } = action;
+        if (!_.isEmpty(payload)) {
+          state.posts = [...payload];
+        }
       });
   },
 });

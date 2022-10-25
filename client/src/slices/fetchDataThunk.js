@@ -3,5 +3,10 @@ import { getPosts } from '../api';
 
 export default createAsyncThunk(
   'data/fetchData',
-  async (username) => getPosts(username),
+  async (username) => {
+    if (!username) {
+      return [];
+    }
+    return getPosts(username);
+  },
 );

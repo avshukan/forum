@@ -12,14 +12,14 @@ function Forum() {
   const { username } = useAuth();
 
   useEffect(() => {
-    dispatch(fetchDataThunk({ username }));
+    dispatch(fetchDataThunk(username));
 
     const intervalId = setInterval(() => {
-      dispatch(fetchDataThunk({ username }));
+      dispatch(fetchDataThunk(username));
     }, 5000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [username]);
 
   return (
     <Container className="h-100 my-4 overflow-hidden rounded shadow">

@@ -8,7 +8,6 @@ import { createComment } from '../api';
 import fetchDataThunk from '../slices/fetchDataThunk';
 import { useAuth } from '../contexts/AuthProvider';
 
-// function Commenter({ postId, refreshPosts }) {
 function Commenter({ postId }) {
   const dispatch = useDispatch();
 
