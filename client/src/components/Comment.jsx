@@ -7,13 +7,14 @@ import {
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import classnames from 'classnames';
 import { useAuth } from '../contexts/AuthProvider';
 import { deleteComment } from '../api';
 import fetchDataThunk from '../slices/fetchDataThunk';
 
 function Comment({ comment }) {
   const {
-    id, post_id: postId, username: usernameComment, text, created_at: createdAt,
+    id, post_id: postId, username: usernameComment, text, status, created_at: createdAt,
   } = comment;
 
   const dispatch = useDispatch();
@@ -22,7 +23,9 @@ function Comment({ comment }) {
 
   const createdAtDate = moment(createdAt);
 
-  const canDelete = () => username === usernameComment;
+  const isDeleted = () => status === 'deleted';
+
+  const canDelete = () => username === usernameComment && !isDeleted();
 
   const onDelete = () => deleteComment({ username, postId, commentId: id })
     .then((response) => {
@@ -32,10 +35,11 @@ function Comment({ comment }) {
     });
 
   return (
-    <Container className="me-3 mb-3 ps-3 pt-3">
+    <Container className={classnames('me-3 mb-3 ps-3 pt-3', { 'border border-danger rounded': isDeleted() })}>
       <Row>
         <Col>
           <div className="d-inline mb-0 pb-0">
+            {isDeleted() && <p className="text-danger">Deleted</p>}
             <p className="mb-0 pb-0">{text}</p>
           </div>
           <div style={{ textAlign: 'right' }}>
@@ -46,7 +50,6 @@ function Comment({ comment }) {
         </Col>
         <Col xs="1">
           <Button variant="danger" onClick={onDelete} disabled={!canDelete()}>
-            {/* <FontAwesomeIcon icon={faTrash} /> */}
             <FontAwesomeIcon icon={faTrash} size="xs" color="white" />
           </Button>
         </Col>
@@ -61,6 +64,7 @@ Comment.propTypes = {
     post_id: PropTypes.number,
     username: PropTypes.string,
     text: PropTypes.string,
+    status: PropTypes.string,
     created_at: PropTypes.string,
   }),
 };
