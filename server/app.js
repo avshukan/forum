@@ -2,7 +2,7 @@ const cors = require('@fastify/cors');
 const path = require('path');
 const AutoLoad = require('@fastify/autoload');
 
-module.exports = async function (fastify, opts) {
+async function app(fastify, opts) {
   // Place here your custom code!
 
   await fastify.register(cors, {
@@ -34,4 +34,6 @@ module.exports = async function (fastify, opts) {
     dir: path.join(__dirname, 'routes'),
     options: { prefix: '/api/v1', ...opts },
   });
-};
+}
+
+module.exports = app;
