@@ -37,12 +37,13 @@ module.exports = {
   production: {
     client: 'pg',
     version: '12.0',
-    connection: {
-      host: process.env.POSTGRES_HOSTNAME,
-      database: process.env.POSTGRES_DATABASE,
-      user: process.env.POSTGRES_USERNAME,
-      password: process.env.POSTGRES_PASSWORD,
-    },
+    connection: process.env.DATABASE_URL,
+    // connection: {
+    //   host: process.env.POSTGRES_HOSTNAME,
+    //   database: process.env.POSTGRES_DATABASE,
+    //   user: process.env.POSTGRES_USERNAME,
+    //   password: process.env.POSTGRES_PASSWORD,
+    // },
     migrations,
   },
 
