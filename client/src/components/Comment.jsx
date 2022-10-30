@@ -10,7 +10,13 @@ import fetchDataThunk from '../slices/fetchDataThunk';
 
 function Comment({ comment }) {
   const {
-    id, post_id: postId, username: usernameComment, text, status, created_at: createdAt,
+    id,
+    post_id: postId,
+    username: usernameComment,
+    text,
+    status,
+    created_at: createdAt,
+    updated_at: updatedAt,
   } = comment;
 
   const dispatch = useDispatch();
@@ -18,6 +24,8 @@ function Comment({ comment }) {
   const { username } = useAuth();
 
   const createdAtDate = moment(createdAt);
+
+  const updatedAtDate = moment(updatedAt);
 
   const isDeleted = () => status === 'deleted';
 
@@ -44,7 +52,11 @@ function Comment({ comment }) {
             <h6 className="mb-0"><span className="text-dark media-heading">{usernameComment}</span></h6>
             <small className="text-muted">{createdAtDate.fromNow()}</small>
             {' '}
-            {isDeleted() && <small className="text-muted border border-danger px-1">deleted</small>}
+            {isDeleted() && (
+              <small className="text-muted border border-danger px-1">
+                {`deleted ${updatedAtDate.fromNow()}`}
+              </small>
+            )}
           </div>
         </div>
         {
@@ -52,8 +64,7 @@ function Comment({ comment }) {
           && (
             <div className="cursor-pointer text-muted ms-3 strong-hover" role="button" onClick={onDelete}>
               <Icon path={mdiDelete} title="Delete comment" size={1} color="red" />
-              {' '}
-              Delete
+              {' Delete'}
             </div>
           )
         }
@@ -74,6 +85,7 @@ Comment.propTypes = {
     text: PropTypes.string,
     status: PropTypes.string,
     created_at: PropTypes.string,
+    updated_at: PropTypes.string,
   }),
 };
 
