@@ -22,7 +22,8 @@ function Forum() {
   }, [username]);
 
   return (
-    <Container className="h-100 my-4 overflow-hidden rounded shadow">
+    <Container className="h-100 my-4 rounded shadow">
+      {/* <Container className="h-100 my-4 overflow-hidden rounded shadow"> */}
       <Row className="p-0 h-100">
         <Col className="p-0 h-100">
           <div className="d-flex flex-column h-100">

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import {
-  Container, Form, Button, Row, Col,
+  Form, Button, Row, Col,
 } from 'react-bootstrap';
 import { createComment } from '../api';
 import fetchDataThunk from '../slices/fetchDataThunk';
@@ -36,28 +36,54 @@ function Commenter({ postId }) {
   };
 
   return (
-    <Container style={{ textAlign: 'right' }}>
-      <Form onSubmit={onSubmit}>
-        <Row className="align-items-center">
-          <Col xs="auto" style={{ flexGrow: 1 }}>
-            <Form.Label htmlFor="comment" visuallyHidden>Comment</Form.Label>
+    // <Container style={{ textAlign: 'right' }}>
+    //   <Form onSubmit={onSubmit}>
+    //     <Row className="align-items-center">
+    //       <Col xs="auto" style={{ flexGrow: 1 }}>
+    //         <Form.Label htmlFor="comment" visuallyHidden>Comment</Form.Label>
+    //         <Form.Control
+    //           id="comment"
+    //           className="mb-2"
+    //           style={{ flexGrow: 1 }}
+    //           placeholder="comment"
+    //           aria-label="text"
+    //           aria-describedby="text"
+    //           value={text}
+    //           onChange={onChangeText}
+    //         />
+    //       </Col>
+    //       <Col xs="auto">
+    //         <Button type="submit" className="mb-2" disabled={!canComment()}>Comment</Button>
+    //       </Col>
+    //     </Row>
+    //   </Form>
+    // </Container>
+    <Form className="mt-4 pt-2" onSubmit={onSubmit}>
+      <Row>
+        <Col md="12">
+          <div className="mb-3">
+            <Form.Label htmlFor="comment" visuallyHidden>Your comment</Form.Label>
             <Form.Control
-              id="comment"
-              className="mb-2"
-              style={{ flexGrow: 1 }}
-              placeholder="comment"
-              aria-label="text"
-              aria-describedby="text"
+              as="textarea"
+              aria-label="comment"
+              className="form-control"
+              required=""
+              rows={2}
               value={text}
               onChange={onChangeText}
             />
-          </Col>
-          <Col xs="auto">
-            <Button type="submit" className="mb-2" disabled={!canComment()}>Comment</Button>
-          </Col>
-        </Row>
-      </Form>
-    </Container>
+            {/* <label className="form-label" hidden>Your Comment</label>
+            <textarea id="message" placeholder="Your Comment" rows="2" name="message" className="form-control" required="" /> */}
+          </div>
+        </Col>
+        <Col md="12">
+          <div className="send d-grid">
+            <Button type="submit" disabled={!canComment()}>Comment</Button>
+            {/* <button type="submit" className="btn btn-primary">Send Comment</button> */}
+          </div>
+        </Col>
+      </Row>
+    </Form>
   );
 }
 

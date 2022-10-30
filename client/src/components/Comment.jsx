@@ -2,12 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import moment from 'moment';
-import {
-  Button, Container, Row, Col,
-} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import classnames from 'classnames';
+import Icon from '@mdi/react';
+import { mdiDelete } from '@mdi/js';
 import { useAuth } from '../contexts/AuthProvider';
 import { deleteComment } from '../api';
 import fetchDataThunk from '../slices/fetchDataThunk';
@@ -27,34 +23,54 @@ function Comment({ comment }) {
 
   const canDelete = () => username === usernameComment && !isDeleted();
 
-  const onDelete = () => deleteComment({ username, postId, commentId: id })
-    .then((response) => {
-      if (response.status === 204) {
-        dispatch(fetchDataThunk(username));
-      }
-    });
+  const onDelete = (event) => {
+    event.preventDefault();
+    return deleteComment({ username, postId, commentId: id })
+      .then((response) => {
+        if (response.status === 204) {
+          dispatch(fetchDataThunk(username));
+        }
+      });
+  };
 
   return (
-    <Container className={classnames('me-3 mb-3 ps-3 pt-3', { 'border border-danger rounded': isDeleted() })}>
-      <Row>
-        <Col>
-          <div className="d-inline mb-0 pb-0">
-            {isDeleted() && <p className="text-danger">Deleted</p>}
-            <p className="mb-0 pb-0">{text}</p>
-          </div>
-          <div style={{ textAlign: 'right' }}>
-            {usernameComment}
+    <li className="mt-4">
+      <div className="d-flex justify-content-between">
+        <div className="d-flex align-items-center">
+          <span className="pe-3">
+            <img src="/images/default.jpg" className="img-fluid avatar-comment rounded-circle shadow" alt="img" />
+          </span>
+          <div>
+            <h6 className="mb-0"><span className="text-dark media-heading">{usernameComment}</span></h6>
+            <small className="text-muted">{createdAtDate.fromNow()}</small>
             {' '}
-            <span style={{ fontSize: 'smaller' }}>{createdAtDate.fromNow()}</span>
+            {isDeleted() && <small className="text-muted border border-danger px-1">deleted</small>}
           </div>
-        </Col>
-        <Col xs="1">
-          <Button variant="danger" onClick={onDelete} disabled={!canDelete()}>
-            <FontAwesomeIcon icon={faTrash} size="xs" color="white" />
-          </Button>
-        </Col>
-      </Row>
-    </Container>
+        </div>
+        {
+          canDelete()
+          && (
+            <span role="button" className="text-muted" onClick={onDelete}>
+              {/* <Icon path={mdiReply}
+            title="Add comment"
+            size={1}
+          /> */}
+              <Icon
+                path={mdiDelete}
+                title="Delete comment"
+                size={1}
+              />
+              {' '}
+              Delete
+            </span>
+          )
+        }
+      </div>
+      <div className="mt-3">
+        <p className="text-muted fst-italic p-3 bg-light">{text}</p>
+      </div>
+    </li>
+
   );
 }
 

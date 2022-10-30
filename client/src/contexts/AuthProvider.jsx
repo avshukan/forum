@@ -1,6 +1,7 @@
 import React, {
   useContext, useMemo, useState, createContext,
   useCallback,
+  useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
 
@@ -10,11 +11,21 @@ function AuthProvider({ children }) {
   const [username, setUsername] = useState('');
 
   const logIn = useCallback((user) => {
+    localStorage.setItem('username', user);
     setUsername(user);
   });
 
-  const logOut = useCallback(() => setUsername(''));
+  const logOut = useCallback(() => {
+    localStorage.removeItem('username');
+    setUsername('');
+  });
 
+  useEffect(() => {
+    const user = localStorage.getItem('username');
+    if (user) {
+      setUsername(user);
+    }
+  });
   const value = useMemo(() => ({ username, logIn, logOut }), [username]);
 
   return (

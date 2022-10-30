@@ -1,3 +1,10 @@
+body {
+  font-family: "Roboto", sans-serif;
+  overflow-x: hidden !important;
+  font-size: 14px;
+  color: #3c4858;
+}
+
 .App {
   text-align: center;
 }
@@ -36,4 +43,52 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.shadow {
+  box-shadow: 0 0 3px rgb(60 72 88 / 15%) !important;
+}
+
+.avatar-post,
+.avatar-comment {
+  height: 45px;
+  width: 45px;
+}
+
+.reply-comment {
+  cursor: pointer;
+}
+
+.form-control {
+  border: 1px solid #dee2e6;
+  font-size: 14px;
+  line-height: 26px;
+  background-color: #fff;
+  border-radius: 0;
+}
+
+.btn {
+  padding: 6px 18px;
+  outline: none;
+  text-decoration: none;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  transition: all 0.3s;
+  border-radius: 0;
+}
+
+button:not(:disabled) {
+  outline: none;
+}
+
+[type=submit]:not(:disabled),
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: #DDB892 !important;
+  border: 1px solid #DDB892 !important;
+  color: #fff !important;
+  box-shadow: 0 3px 5px 0 rgb(221 184 146 / 10%);
 }

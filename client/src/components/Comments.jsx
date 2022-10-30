@@ -6,10 +6,13 @@ import Comment from './Comment';
 
 function Comments({ postId, comments }) {
   return (
-    <div className="ms-5">
-      <Commenter postId={postId} />
+    // <div className="ms-5">
+    //   <Commenter postId={postId} />
+    //   {_.reverse(_.sortBy(comments, ['created_at'])).map((comment) => <Comment key={comment.id} comment={comment} />)}
+    // </div>
+    <ul className="list-unstyled ps-4 ps-md-5 sub-comment">
       {_.reverse(_.sortBy(comments, ['created_at'])).map((comment) => <Comment key={comment.id} comment={comment} />)}
-    </div>
+    </ul>
   );
 }
 
