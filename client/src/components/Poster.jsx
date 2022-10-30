@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
-  Container, Form, Button, InputGroup,
+  Row, Col, Form, Button,
 } from 'react-bootstrap';
 import { createPost } from '../api';
 import fetchDataThunk from '../slices/fetchDataThunk';
 import { useAuth } from '../contexts/AuthProvider';
+import { hidePoster } from '../slices/visabilitySlice';
 
 function Poster() {
   const dispatch = useDispatch();
@@ -16,7 +17,7 @@ function Poster() {
 
   const [text, setText] = useState('');
 
-  const canPost = () => !!username;
+  const canPost = () => Boolean(username);
 
   const onChangeHeader = (event) => {
     setHeader(event.target.value);
@@ -36,36 +37,47 @@ function Poster() {
     if (response.status === 201) {
       setHeader('');
       setText('');
-      await dispatch(fetchDataThunk(username));
+      dispatch(hidePoster());
+      dispatch(fetchDataThunk(username));
     }
   };
 
   return (
-    <Container style={{ textAlign: 'right' }}>
-      <Form onSubmit={onSubmit}>
-        <InputGroup className="mb-3">
-          <InputGroup.Text id="header">Set post header:</InputGroup.Text>
+    <Form className="mt-4 pt-2" onSubmit={onSubmit}>
+      <Row>
+        <Col md="12" className="mb-3">
+          <Form.Label htmlFor="header" visuallyHidden>Header</Form.Label>
           <Form.Control
+            id="header"
             placeholder="header"
             aria-label="header"
             aria-describedby="header"
+            required=""
             value={header}
             onChange={onChangeHeader}
           />
-        </InputGroup>
-        <InputGroup className="mb-3">
-          <InputGroup.Text>Type your post...</InputGroup.Text>
+        </Col>
+        <Col md="12" className="mb-3">
+          <Form.Label htmlFor="text" visuallyHidden>Your comment</Form.Label>
           <Form.Control
+            id="text"
+            placeholder="text"
             as="textarea"
-            aria-label="Text"
-            rows={3}
+            aria-label="text"
+            className="form-control"
+            required=""
+            rows={2}
             value={text}
             onChange={onChangeText}
           />
-        </InputGroup>
-        <Button variant="primary" type="submit" className="ml-auto" disabled={!canPost()}>Send</Button>
-      </Form>
-    </Container>
+        </Col>
+        <Col md="12">
+          <div className="send d-grid">
+            <Button type="submit">Send post</Button>
+          </div>
+        </Col>
+      </Row>
+    </Form>
   );
 }
 

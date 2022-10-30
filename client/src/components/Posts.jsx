@@ -7,16 +7,11 @@ function Posts() {
   const { posts } = useSelector((state) => state.data);
 
   return (
-    <>
-      <hr />
-      <div className="card rounded-0 border-0 p-4">
-        {/* <div style={{ overflowX: 'hidden', overflowY: 'auto' }}> */}
-        <ul className="list-unstyled mt-4 pt-2 mb-0">
-          {_.reverse(_.sortBy(posts, ['created_at'])).map((post) => <Post key={post.id} post={post} />)}
-        </ul>
-        {/* </div> */}
-      </div>
-    </>
+    <div className="card rounded-0 border-0 p-4">
+      <ul className="list-unstyled mt-4 pt-2 mb-0">
+        {_.reverse(_.sortBy(posts, ['created_at'])).map((post) => <Post key={post.id} post={post} />)}
+      </ul>
+    </div>
   );
 }
 

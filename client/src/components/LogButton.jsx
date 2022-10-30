@@ -1,7 +1,7 @@
 import React, {
   useState, useEffect, useCallback, useRef,
 } from 'react';
-import { Button, Form, InputGroup } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthProvider';
 
 function LogButton() {
@@ -30,6 +30,7 @@ function LogButton() {
     event.preventDefault();
     logIn(usernameValue);
     setEditMode(false);
+    setUsernameValue('');
   };
 
   useEffect(() => {
@@ -38,17 +39,17 @@ function LogButton() {
 
   const edit = (
     <Form onSubmit={onSubmit}>
-      <InputGroup className="mb-3">
-        <InputGroup.Text id="basic-addon1">Set username:</InputGroup.Text>
-        <Form.Control
-          ref={ref}
-          placeholder="Username"
-          aria-label="Username"
-          aria-describedby="basic-addon1"
-          value={usernameValue}
-          onChange={onChange}
-        />
-      </InputGroup>
+      <Form.Label htmlFor="username" visuallyHidden>Header</Form.Label>
+      <Form.Control
+        ref={ref}
+        id="username"
+        placeholder="Username"
+        aria-label="username"
+        aria-describedby="username"
+        required=""
+        value={usernameValue}
+        onChange={onChange}
+      />
     </Form>
   );
 

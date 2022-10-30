@@ -1,15 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import Commenter from './Commenter';
 import Comment from './Comment';
 
-function Comments({ postId, comments }) {
+function Comments({ comments }) {
   return (
-    // <div className="ms-5">
-    //   <Commenter postId={postId} />
-    //   {_.reverse(_.sortBy(comments, ['created_at'])).map((comment) => <Comment key={comment.id} comment={comment} />)}
-    // </div>
     <ul className="list-unstyled ps-4 ps-md-5 sub-comment">
       {_.reverse(_.sortBy(comments, ['created_at'])).map((comment) => <Comment key={comment.id} comment={comment} />)}
     </ul>
@@ -17,7 +12,6 @@ function Comments({ postId, comments }) {
 }
 
 Comments.propTypes = {
-  postId: PropTypes.number,
   comments: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
@@ -30,7 +24,6 @@ Comments.propTypes = {
 };
 
 Comments.defaultProps = {
-  postId: 0,
   comments: [{}],
 };
 

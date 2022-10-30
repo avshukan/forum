@@ -1,15 +1,14 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-import _ from 'lodash';
-import fetchDataThunk from './fetchDataThunk';
 
 const initialState = {
-  commenters: [],
   comments: [],
+  commenter: false,
+  poster: false,
 };
 
-const commentsVisabilitySlice = createSlice({
-  name: 'commentsVisability',
+const visabilitySlice = createSlice({
+  name: 'visability',
   initialState,
   reducers: {
     showComments: (state, action) => {
@@ -22,11 +21,16 @@ const commentsVisabilitySlice = createSlice({
     },
     showCommenter: (state, action) => {
       const { postId } = action.payload;
-      state.commenters[postId] = true;
+      state.commenter = postId;
     },
-    hideCommenter: (state, action) => {
-      const { postId } = action.payload;
-      state.commenters[postId] = false;
+    hideCommenter: (state, _action) => {
+      state.commenter = false;
+    },
+    showPoster: (state, _action) => {
+      state.poster = true;
+    },
+    hidePoster: (state, _action) => {
+      state.poster = false;
     },
   },
 });
@@ -36,6 +40,8 @@ export const {
   hideComments,
   showCommenter,
   hideCommenter,
-} = commentsVisabilitySlice.actions;
+  showPoster,
+  hidePoster,
+} = visabilitySlice.actions;
 
-export default commentsVisabilitySlice.reducer;
+export default visabilitySlice.reducer;

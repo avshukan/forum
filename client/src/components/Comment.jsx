@@ -50,19 +50,11 @@ function Comment({ comment }) {
         {
           canDelete()
           && (
-            <span role="button" className="text-muted" onClick={onDelete}>
-              {/* <Icon path={mdiReply}
-            title="Add comment"
-            size={1}
-          /> */}
-              <Icon
-                path={mdiDelete}
-                title="Delete comment"
-                size={1}
-              />
+            <div className="cursor-pointer text-muted ms-3 strong-hover" role="button" onClick={onDelete}>
+              <Icon path={mdiDelete} title="Delete comment" size={1} color="red" />
               {' '}
               Delete
-            </span>
+            </div>
           )
         }
       </div>

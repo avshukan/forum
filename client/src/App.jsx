@@ -2,28 +2,24 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
+import { Container } from 'react-bootstrap';
 import AuthProvider from './contexts/AuthProvider';
-import dataSlice from './slices/dataSlice';
 import Header from './components/Header';
+import Brand from './components/Brand';
 import Footer from './components/Footer';
 import Forum from './components/Forum';
-
-const store = configureStore({
-  reducer: {
-    data: dataSlice,
-  },
-});
+import store from './slices';
 
 function App() {
   return (
     <AuthProvider>
       <Provider store={store}>
-        <div className="d-flex flex-column h-100">
+        <Container className="d-flex flex-column h-100 App-area mx-auto">
           <Header />
+          <Brand />
           <Forum />
           <Footer />
-        </div>
+        </Container>
       </Provider>
     </AuthProvider>
   );
