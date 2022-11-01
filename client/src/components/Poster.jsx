@@ -43,7 +43,7 @@ function Poster() {
   };
 
   return (
-    <Form className="mt-4 pt-2" onSubmit={onSubmit}>
+    <Form className="mb-4 pb-2" onSubmit={onSubmit}>
       <Row>
         <Col md="12" className="mb-3">
           <Form.Label htmlFor="header" visuallyHidden>Header</Form.Label>

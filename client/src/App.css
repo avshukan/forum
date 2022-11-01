@@ -1,3 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;500&family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Karla&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Cookie&display=swap');
+
 :root {
   --main-bg-color: #f8f9fc !important;
 }
@@ -44,7 +48,7 @@ body {
   padding-bottom: 30px;
   --bs-bg-opacity: 1;
   background-color: var(--main-bg-color);
-  font-family: Cookie, sans-serif;
+  font-family: Cookie, cursive;
   font-size: 60px;
   font-weight: 400;
 }
@@ -92,6 +96,15 @@ body {
   border-radius: 0;
 }
 
+.btn.btn-icon {
+  height: 36px;
+  width: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
 button:not(:disabled) {
   outline: none;
 }
@@ -114,4 +127,60 @@ button:not(:disabled) {
 
 .strong-hover:hover {
   opacity: 1;
+}
+
+.sidebar-title-box {
+  display: block;
+  font-size: 16px !important;
+  font-family: "Lora", serif;
+  line-height: 1.5;
+  font-weight: 500 !important;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem !important;
+  background-color: #f9f2eb !important;
+  text-align: center !important;
+}
+
+.sidebar-title-box ul {
+  display: block;
+  padding-left: 0;
+  list-style: none;
+  margin-top: 1.5rem !important;
+  margin-bottom: 0 !important;
+  text-align: center !important;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
+}
+
+.list-inline-item {
+  display: inline-block;
+}
+
+.gallery-grid .item {
+  position: relative;
+  width: calc(100% / 3);
+  padding-top: calc(100% / 3);
+  float: left;
+}
+
+.gallery-grid .item a {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  overflow: hidden;
+}
+
+.gallery-grid .item:first-child {
+  width: 66.66666666%;
+  padding-top: 66.66666666%;
+}
+
+.gallery-grid .item:nth-child(4) {
+  clear: both;
 }

@@ -59,11 +59,6 @@ function Post({ post }) {
           </div>
         </div>
         <div className="d-flex">
-          <div className="cursor-pointer text-muted ms-3" role="button" onClick={onClickReply}>
-            <Icon path={mdiReply} title="Reply post" size={1} />
-            {' '}
-            Reply
-          </div>
           {canDelete() && (
             <div className="cursor-pointer text-muted ms-3 strong-hover" role="button" onClick={onDelete}>
               <Icon path={mdiDelete} title="Reply post" size={1} color="red" />
@@ -71,6 +66,11 @@ function Post({ post }) {
               Delete
             </div>
           )}
+          <div className="cursor-pointer text-muted ms-3" role="button" onClick={onClickReply}>
+            <Icon path={mdiReply} title="Reply post" size={1} />
+            {' '}
+            Reply
+          </div>
         </div>
       </div>
       <div className="mt-3 text-muted fst-italic bg-light p-3">

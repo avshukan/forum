@@ -5,7 +5,7 @@ import { Navbar, NavItem } from 'react-bootstrap';
 function Brand() {
   return (
     <NavItem className="App-brand">
-      <Navbar.Brand href="#home">
+      <Navbar.Brand href="/">
         My Forum
       </Navbar.Brand>
     </NavItem>
