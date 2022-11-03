@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  forum_backend:
+    container_name: forum_backend
+    image: 'forum_backend'
+    build:
+      context: ./server
+    ports:
+      - '5000:5000'
+    env_file: ./server/.env
+    depends_on: 
+      - forum_db
+
+  forum_db:
+    container_name: forum_db
+    hostname: postgres
+    image: 'postgres:13'
+    ports:
+      - '5432:5432'
+    restart: always
+    env_file: ./server/.env
+    volumes:
+      - fastify_volume:/var/lib/postgres/data
+
+volumes:
+  fastify_volume: {}

@@ -1,6 +1,9 @@
 start:
 	npm run start
 
+env:
+	cp -n .env.example .env || true
+
 dev:
 	npm run dev
 
