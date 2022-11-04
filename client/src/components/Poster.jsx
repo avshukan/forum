@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   Row, Col, Form, Button,
@@ -16,6 +16,8 @@ function Poster() {
   const [header, setHeader] = useState('');
 
   const [text, setText] = useState('');
+
+  const headerRef = useRef();
 
   const canPost = () => Boolean(username);
 
@@ -42,6 +44,8 @@ function Poster() {
     }
   };
 
+  useEffect(() => headerRef?.current.focus(), []);
+
   return (
     <Form className="mb-4 pb-2" onSubmit={onSubmit}>
       <Row>
@@ -55,6 +59,7 @@ function Poster() {
             required=""
             value={header}
             onChange={onChangeHeader}
+            ref={headerRef}
           />
         </Col>
         <Col md="12" className="mb-3">

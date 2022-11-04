@@ -1,5 +1,8 @@
+env:
+	cp -n .env.example .env || true
+
 start:
-	make -C client start && make -C server start
+	docker-compose up --build -d
 
 backend:
 	bash -c "npm run start-backend"

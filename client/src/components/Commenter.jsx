@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import {
@@ -15,6 +15,8 @@ function Commenter({ postId }) {
   const { username } = useAuth();
 
   const [text, setText] = useState('');
+
+  const refText = useRef();
 
   const canComment = () => Boolean(username);
 
@@ -38,6 +40,8 @@ function Commenter({ postId }) {
     }
   };
 
+  useEffect(() => refText?.current.focus(), []);
+
   return (
     <Form className="mt-4 pt-2" onSubmit={onSubmit}>
       <Row>
@@ -52,6 +56,7 @@ function Commenter({ postId }) {
               rows={2}
               value={text}
               onChange={onChangeText}
+              ref={refText}
             />
           </div>
         </Col>

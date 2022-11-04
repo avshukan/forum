@@ -1,25 +1,28 @@
-FROM node:latest
-
-EXPOSE 5000
-
-RUN npm install npm@latest -g
-
-WORKDIR /usr/src/server
+FROM node
 
 ARG NODE_ENV
-
 ENV NODE_ENV $NODE_ENV
-
-COPY package*.json /usr/src/server/
-
-RUN npm install
-
-COPY . /usr/src/server
-
-ENV PORT 5000
+ARG POSTGRES_HOSTNAME
+ENV POSTGRES_HOSTNAME $POSTGRES_HOSTNAME
+ARG POSTGRES_DATABASE
+ENV POSTGRES_DATABASE $POSTGRES_DATABASE
+ARG POSTGRES_USERNAME
+ENV POSTGRES_USERNAME $POSTGRES_USERNAME
+ARG POSTGRES_PASSWORD
+ENV POSTGRES_PASSWORD $POSTGRES_PASSWORD
+ARG PORT
+ENV PORT $PORT
 
 EXPOSE $PORT
 
-CMD [ "make", "migrate"]
+WORKDIR /usr/src/server
+
+COPY . /usr/src/server
+
+RUN npm install npm@latest -g
+
+RUN npm install
+
+# CMD [ "make", "migrate"]
 
 ENTRYPOINT ["make", "start"]
