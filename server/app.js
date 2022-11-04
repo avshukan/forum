@@ -2,13 +2,15 @@ const cors = require('@fastify/cors');
 const path = require('path');
 const AutoLoad = require('@fastify/autoload');
 
+const { CORS_HOSTNAME } = process.env;
+
 async function app(fastify, opts) {
   // Place here your custom code!
 
   await fastify.register(cors, {
     origin: (origin, cb) => {
       const { hostname } = new URL(origin);
-      if (hostname === 'localhost') {
+      if (hostname === CORS_HOSTNAME) {
         //  Request from localhost will pass
         cb(null, true);
         return;
