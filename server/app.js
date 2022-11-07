@@ -3,6 +3,7 @@ const AutoLoad = require('@fastify/autoload');
 
 async function app(fastify, opts) {
   // Place here your custom code!
+  fastify.register(require('@fastify/cookie'));
 
   // Do not touch the following lines
 

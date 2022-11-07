@@ -1,31 +1,23 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Poster from './Poster';
+import React from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
+import Title from './Title';
 import Posts from './Posts';
-import { useAuth } from '../contexts/AuthProvider';
-import fetchDataThunk from '../slices/fetchDataThunk';
+import Sidebar from './Sidebar';
 
 function Forum() {
-  const dispatch = useDispatch();
-
-  const { username } = useAuth();
-
-  const visbilityPost = useSelector((store) => store.visability.poster);
-
-  useEffect(() => {
-    dispatch(fetchDataThunk(username));
-
-    const intervalId = setInterval(() => {
-      dispatch(fetchDataThunk(username));
-    }, 5000);
-
-    return () => clearInterval(intervalId);
-  }, [username]);
-
   return (
     <>
-      {visbilityPost && <Poster />}
-      <Posts />
+      <Title text="Forum" />
+      <Container className="px-0">
+        <Row>
+          <Col lg="8" sm="12" className="mb-5">
+            <Posts />
+          </Col>
+          <Col lg="4" sm="12">
+            <Sidebar />
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 }

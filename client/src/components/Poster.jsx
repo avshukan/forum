@@ -11,7 +11,7 @@ import { hidePoster } from '../slices/visabilitySlice';
 function Poster() {
   const dispatch = useDispatch();
 
-  const { username } = useAuth();
+  const { token, username } = useAuth();
 
   const [header, setHeader] = useState('');
 
@@ -35,7 +35,7 @@ function Poster() {
       return;
     }
 
-    const response = await createPost({ username, header, text });
+    const response = await createPost(token, { username, header, text });
     if (response.status === 201) {
       setHeader('');
       setText('');

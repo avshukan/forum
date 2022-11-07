@@ -3,10 +3,23 @@ const baseUrl = new URL(REACT_APP_API_URL, REACT_APP_API_BASE);
 
 const headers = {
   'Content-Type': 'application/json;charset=utf-8',
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
-  'Access-Control-Allow-Credentials': 'true',
-  'Access-Control-Allow-Headers': 'Authorization, Origin, X-Requested-With, Accept, X-PINGOTHER, Content-Type',
+  // 'Access-Control-Allow-Origin': '*',
+  // 'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+  // 'Access-Control-Allow-Credentials': 'true',
+  // 'Access-Control-Allow-Headers': 'Authorization, Origin,
+  // X-Requested-With, Accept, X-PINGOTHER, Content-Type',
+};
+
+export const signup = () => {
+  console.log('signup api');
+  const { href } = new URL(['auth', 'signup'].join('/'), baseUrl);
+  return fetch(href, {
+    method: 'POST',
+    headers,
+    // body: JSON.stringify({ username }),
+    body: JSON.stringify({}),
+  })
+    .catch((error) => console.log(error));
 };
 
 export const getPosts = (username) => {
@@ -19,11 +32,14 @@ export const getPosts = (username) => {
     .catch((error) => console.log(error));
 };
 
-export const createPost = (data) => {
+export const createPost = (token, data) => {
   const { href } = new URL('posts', baseUrl);
   return fetch(href, {
     method: 'POST',
-    headers,
+    headers: {
+      ...headers,
+      Authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify(data),
   })
     .catch((error) => console.log(error));

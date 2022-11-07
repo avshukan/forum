@@ -9,10 +9,12 @@ const AuthContext = createContext({});
 
 function AuthProvider({ children }) {
   const [username, setUsername] = useState('');
+  const [token, setToken] = useState('');
 
-  const logIn = useCallback((user) => {
+  const logIn = useCallback((user, newtoken) => {
     localStorage.setItem('username', user);
     setUsername(user);
+    setToken(newtoken);
   });
 
   const logOut = useCallback(() => {
@@ -26,7 +28,9 @@ function AuthProvider({ children }) {
       setUsername(user);
     }
   });
-  const value = useMemo(() => ({ username, logIn, logOut }), [username]);
+  const value = useMemo(() => ({
+    token, username, logIn, logOut,
+  }), [username]);
 
   return (
     <AuthContext.Provider value={value}>

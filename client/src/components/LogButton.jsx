@@ -2,6 +2,7 @@ import React, {
   useState, useEffect, useCallback, useRef,
 } from 'react';
 import { Button, Form } from 'react-bootstrap';
+import { signup } from '../api';
 import { useAuth } from '../contexts/AuthProvider';
 
 function LogButton() {
@@ -28,9 +29,17 @@ function LogButton() {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    logIn(usernameValue);
-    setEditMode(false);
-    setUsernameValue('');
+    signup()
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('data', data);
+        const { token } = data;
+        // logIn(usernameValue);
+        logIn(usernameValue, token);
+        setEditMode(false);
+        setUsernameValue('');
+      })
+      .catch((error) => console.log('logButton onSubmit error', error));
   };
 
   useEffect(() => {
