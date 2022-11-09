@@ -1,3 +1,5 @@
+const { genSaltSync, hashSync } = require('bcryptjs');
+
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
@@ -7,14 +9,23 @@ const seed = async (knex) => {
   await knex('comments').del();
   await knex('posts').del();
   await knex('users').del();
+  // prepare password and salt
+  const password = 'qweasd';
+  const saltLength = 16;
+  const salts = [
+    genSaltSync(saltLength),
+    genSaltSync(saltLength),
+    genSaltSync(saltLength),
+    genSaltSync(saltLength),
+  ];
   // Inserts new entries
   const userIds = await knex('users')
     .returning('id')
     .insert([
-      { username: 'Alice' },
-      { username: 'Barbara' },
-      { username: 'Carol' },
-      { username: 'Diana' },
+      { username: 'Alice', email: 'alice@example.com', salt: salts[0], passhash: hashSync(password, salts[0]) },
+      { username: 'Barbara', email: 'barbara@example.com', salt: salts[1], passhash: hashSync(password, salts[1]) },
+      { username: 'Carol', email: 'carol@example.com', salt: salts[2], passhash: hashSync(password, salts[2]) },
+      { username: 'Diana', email: 'diana@example.com', salt: salts[3], passhash: hashSync(password, salts[3]) },
     ]);
   const postIds = await knex('posts')
     .returning('id')
