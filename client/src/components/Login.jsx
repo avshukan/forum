@@ -1,17 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { redirect } from 'react-router-dom';
+// import { redirect } from 'react-router-dom';
 import {
   Button, Col, Container, Form, Row,
 } from 'react-bootstrap';
-import { signup } from '../api';
+// import { login } from '../api';
+import { useDispatch } from 'react-redux';
 import Title from './Title';
+import loginThunk from '../slices/loginThunk';
 
-function Signup() {
+function Login() {
+  const dispatch = useDispatch();
+
   const [data, setData] = useState({
     username: '',
-    email: '',
     password: '',
-    passwordConfirmation: '',
   });
 
   const ref = useRef();
@@ -28,19 +30,24 @@ function Signup() {
     event.preventDefault();
     // need to check password confirmation
     // need to check minimal length and email format
-    const { username, email, password } = data;
-    const response = await signup({ username, email, password });
+    console.log('data', data);
+    const { username, password } = data;
+    // const response = await login({ username, email, password });
+    console.log('username, password', username, password);
+    const response = dispatch(loginThunk({ username, password }));
 
-    if (response.status === 201) {
-      // const { token, id, username } = await response.json();
-      const { token, id } = await response.json();
-      localStorage.setItem('token', token);
-      localStorage.setItem('id', id);
-      localStorage.setItem('username', username);
-      redirect('/');
-      // save token, id & username into store
-      // dispatch(hideCommenter());
-    }
+    console.log('response + status', response, response.status);
+
+    // if (response.status === 201) {
+    //   // const { token, id, username } = await response.json();
+    //   const { token, id } = await response.json();
+    //   localStorage.setItem('token', token);
+    //   localStorage.setItem('id', id);
+    //   localStorage.setItem('username', username);
+    //   redirect('/');
+    //   // save token, id & username into store
+    //   // dispatch(hideCommenter());
+    // }
   };
 
   useEffect(() => ref?.current.focus(), []);
@@ -73,18 +80,6 @@ function Signup() {
                   {t(feedbackError.username)}</div>} */}
               </Form.Group>
               <Form.Group className="form-floating mb-2">
-                <Form.Label htmlFor="email">Name</Form.Label>
-                <Form.Control
-                  id="email"
-                  placeholder="Email"
-                  name="email"
-                  autoComplete="email"
-                  className="form-control"
-                  onChange={handleChange}
-                  value={data.email}
-                />
-              </Form.Group>
-              <Form.Group className="form-floating mb-2">
                 <Form.Label htmlFor="password">Password</Form.Label>
                 <Form.Control
                   id="password"
@@ -97,20 +92,7 @@ function Signup() {
                   value={data.password}
                 />
               </Form.Group>
-              <Form.Group className="form-floating mb-2">
-                <Form.Label htmlFor="passwordConfirmation">Password Confirmation</Form.Label>
-                <Form.Control
-                  id="passwordConfirmation"
-                  placeholder="Password Confirmation"
-                  name="passwordConfirmation"
-                  autoComplete="current-password"
-                  className="form-control"
-                  type="password"
-                  onChange={handleChange}
-                  value={data.passwordConfirmation}
-                />
-              </Form.Group>
-              <Button type="submit" variant="outline-primary" style={{ width: '100%' }}>Register</Button>
+              <Button type="submit" variant="outline-primary" style={{ width: '100%' }}>Log in</Button>
               {/* {signupError
                 && <div id="b" className="invalid-feedback active show d-block">
                 {signupError}</div>} */}
@@ -122,4 +104,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default Login;

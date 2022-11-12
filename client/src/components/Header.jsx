@@ -1,14 +1,14 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import {
   Container, Nav, Navbar, NavItem, NavLink,
 } from 'react-bootstrap';
 import LogButton from './LogButton';
-import { useAuth } from '../contexts/AuthProvider';
 import CreatePostButton from './CreatePostButton';
 // import logo from './logo.svg';
 
 function Header() {
-  const { username } = useAuth();
+  const { username } = useSelector((state) => state.user);
 
   return (
     <Container fluid className="App-header-wrapper">

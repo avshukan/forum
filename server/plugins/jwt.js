@@ -14,8 +14,8 @@ module.exports = fp(async (fastify, _opts) => {
       console.log('request.query', request.query);
       console.log('request.cookies', request.cookies);
       console.log('request.user', request.user);
-      await request.jwtVerify();
-      fastify.log.info({ bingo: 'BINGO!!!!!!!!!!!!!!!!!!!!!!!!!!' });
+      const decode = await request.jwtVerify();
+      fastify.log.info({ decode });
     } catch (error) {
       reply.send(error);
     }

@@ -22,10 +22,18 @@ const seed = async (knex) => {
   const userIds = await knex('users')
     .returning('id')
     .insert([
-      { username: 'Alice', email: 'alice@example.com', salt: salts[0], passhash: hashSync(password, salts[0]) },
-      { username: 'Barbara', email: 'barbara@example.com', salt: salts[1], passhash: hashSync(password, salts[1]) },
-      { username: 'Carol', email: 'carol@example.com', salt: salts[2], passhash: hashSync(password, salts[2]) },
-      { username: 'Diana', email: 'diana@example.com', salt: salts[3], passhash: hashSync(password, salts[3]) },
+      {
+        username: 'Alice', email: 'alice@example.com', salt: salts[0], passhash: hashSync(password, salts[0]),
+      },
+      {
+        username: 'Barbara', email: 'barbara@example.com', salt: salts[1], passhash: hashSync(password, salts[1]),
+      },
+      {
+        username: 'Carol', email: 'carol@example.com', salt: salts[2], passhash: hashSync(password, salts[2]),
+      },
+      {
+        username: 'Diana', email: 'diana@example.com', salt: salts[3], passhash: hashSync(password, salts[3]),
+      },
     ]);
   const postIds = await knex('posts')
     .returning('id')

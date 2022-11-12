@@ -1,25 +1,25 @@
 const { REACT_APP_API_URL, REACT_APP_API_BASE } = process.env;
 const baseUrl = new URL(REACT_APP_API_URL, REACT_APP_API_BASE);
 
-const headers = {
-  'Content-Type': 'application/json;charset=utf-8',
-  // 'Access-Control-Allow-Origin': '*',
-  // 'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
-  // 'Access-Control-Allow-Credentials': 'true',
-  // 'Access-Control-Allow-Headers': 'Authorization, Origin,
-  // X-Requested-With, Accept, X-PINGOTHER, Content-Type',
+const headers = { 'Content-Type': 'application/json;charset=utf-8' };
+
+export const login = ({ username, password }) => {
+  console.log('api username, password', username, password);
+  const { href } = new URL(['auth', 'login'].join('/'), baseUrl);
+  return fetch(href, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ username, password }),
+  });
 };
 
-export const signup = () => {
-  console.log('signup api');
+export const signup = ({ username, email, password }) => {
   const { href } = new URL(['auth', 'signup'].join('/'), baseUrl);
   return fetch(href, {
     method: 'POST',
     headers,
-    // body: JSON.stringify({ username }),
-    body: JSON.stringify({}),
-  })
-    .catch((error) => console.log(error));
+    body: JSON.stringify({ username, email, password }),
+  });
 };
 
 export const getPosts = (username) => {
@@ -28,8 +28,7 @@ export const getPosts = (username) => {
   params.append('username', username);
   const { href } = resultUrl;
   return fetch(href, headers)
-    .then((response) => response.json())
-    .catch((error) => console.log(error));
+    .then((response) => response.json());
 };
 
 export const createPost = (token, data) => {
@@ -41,8 +40,7 @@ export const createPost = (token, data) => {
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(data),
-  })
-    .catch((error) => console.log(error));
+  });
 };
 
 export const deletePost = ({ username, postId }) => {
@@ -51,8 +49,7 @@ export const deletePost = ({ username, postId }) => {
     method: 'DELETE',
     headers,
     body: JSON.stringify({ username }),
-  })
-    .catch((error) => console.log(error));
+  });
 };
 
 export const createComment = (data) => {
@@ -62,8 +59,7 @@ export const createComment = (data) => {
     method: 'POST',
     headers,
     body: JSON.stringify(data),
-  })
-    .catch((error) => console.log(error));
+  });
 };
 
 export const deleteComment = ({ username, postId, commentId }) => {
@@ -72,6 +68,5 @@ export const deleteComment = ({ username, postId, commentId }) => {
     method: 'DELETE',
     headers,
     body: JSON.stringify({ username }),
-  })
-    .catch((error) => console.log(error));
+  });
 };
