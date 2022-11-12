@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-// import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Button, Col, Container, Form, Row,
 } from 'react-bootstrap';
@@ -10,6 +10,8 @@ import loginThunk from '../slices/loginThunk';
 
 function Login() {
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const [data, setData] = useState({
     username: '',
@@ -48,6 +50,7 @@ function Login() {
     //   // save token, id & username into store
     //   // dispatch(hideCommenter());
     // }
+    navigate('/');
   };
 
   useEffect(() => ref?.current.focus(), []);

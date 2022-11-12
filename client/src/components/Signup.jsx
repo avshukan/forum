@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Button, Col, Container, Form, Row,
 } from 'react-bootstrap';
@@ -7,6 +7,8 @@ import { signup } from '../api';
 import Title from './Title';
 
 function Signup() {
+  const navigate = useNavigate();
+
   const [data, setData] = useState({
     username: '',
     email: '',
@@ -37,7 +39,7 @@ function Signup() {
       localStorage.setItem('token', token);
       localStorage.setItem('id', id);
       localStorage.setItem('username', username);
-      redirect('/');
+      navigate('/');
       // save token, id & username into store
       // dispatch(hideCommenter());
     }

@@ -2,29 +2,31 @@ const yup = require('yup');
 const getUsernameById = require('../helpers/getUsernameById');
 
 async function getPosts(request, reply) {
-  const { username } = request.query;
+  // const { username } = request.query;
+  console.log('request.headers', request.headers);
+
+  // try {
+  //   yup
+  //     .object({
+  //       username: yup.string()
+  //         .required('username is required')
+  //         .max(20, 'username max length is 20'),
+  //     })
+  //     .validateSync({ username });
+  // } catch ({ message }) {
+  //   reply
+  //     .code(400)
+  //     .send({
+  //       error: 'Invalid query',
+  //       detail: { message },
+  //     });
+
+  //   return;
+  // }
 
   try {
-    yup
-      .object({
-        username: yup.string()
-          .required('username is required')
-          .max(20, 'username max length is 20'),
-      })
-      .validateSync({ username });
-  } catch ({ message }) {
-    reply
-      .code(400)
-      .send({
-        error: 'Invalid query',
-        detail: { message },
-      });
+    const { user: { id: userId } } = await request.jwtVerify();
 
-    return;
-  }
-
-  try {
-    const userId = await this.getUserId(username);
     const users = await this.db('users');
     const posts = await this.db('posts');
     const comments = await this.db('comments');

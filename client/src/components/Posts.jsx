@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 import { Container, Row, Col } from 'react-bootstrap';
-import { useAuth } from '../contexts/AuthProvider';
 import fetchDataThunk from '../slices/fetchDataThunk';
 import Post from './Post';
 import Poster from './Poster';
@@ -10,21 +9,21 @@ import Poster from './Poster';
 function Posts() {
   const dispatch = useDispatch();
 
-  const { username } = useAuth();
+  const { token } = useSelector((state) => state.user);
 
   const { posts } = useSelector((state) => state.data);
 
   const visbilityPost = useSelector((store) => store.visability.poster);
 
   useEffect(() => {
-    dispatch(fetchDataThunk(username));
+    dispatch(fetchDataThunk(token));
 
     const intervalId = setInterval(() => {
-      dispatch(fetchDataThunk(username));
+      dispatch(fetchDataThunk(token));
     }, 5000);
 
     return () => clearInterval(intervalId);
-  }, [username]);
+  }, [token]);
 
   return (
     <>
