@@ -2,34 +2,13 @@ const yup = require('yup');
 const getUsernameById = require('../helpers/getUsernameById');
 
 async function getPosts(request, reply) {
-  // const { username } = request.query;
-  console.log('request.headers', request.headers);
-
-  // try {
-  //   yup
-  //     .object({
-  //       username: yup.string()
-  //         .required('username is required')
-  //         .max(20, 'username max length is 20'),
-  //     })
-  //     .validateSync({ username });
-  // } catch ({ message }) {
-  //   reply
-  //     .code(400)
-  //     .send({
-  //       error: 'Invalid query',
-  //       detail: { message },
-  //     });
-
-  //   return;
-  // }
-
   try {
     const { user: { id: userId } } = await request.jwtVerify();
 
     const users = await this.db('users');
     const posts = await this.db('posts');
     const comments = await this.db('comments');
+
     const result = posts.map(({ user_id: postUserId, ...post }) => ({
       ...post,
       user_id: postUserId,
@@ -52,7 +31,7 @@ async function getPosts(request, reply) {
     reply
       .code(500)
       .send({
-        error: 'server error',
+        error: 'Server error',
         detail: error,
       });
   }
@@ -60,13 +39,23 @@ async function getPosts(request, reply) {
 
 async function createPost(request, reply) {
   const { body } = request;
+  const user = {};
+
+  try {
+    const { user: { id } } = await request.jwtVerify();
+    user.id = id;
+  } catch ({ message }) {
+    reply
+      .code(401)
+      .send({
+        error: 'Not authorized',
+        detail: { message },
+      });
+  }
 
   try {
     yup
       .object({
-        username: yup.string()
-          .required('username is required')
-          .max(20, 'username max length is 20'),
         header: yup.string()
           .required('header is required')
           .max(100, 'header max length is 100'),
@@ -87,11 +76,10 @@ async function createPost(request, reply) {
   }
 
   try {
-    const { username, ...data } = request.body;
-    const userId = await this.getUserId(username);
+    const { body: { header, text } } = request;
     const id = await this.db('posts')
       .returning('id')
-      .insert({ ...data, user_id: userId });
+      .insert({ header, text, user_id: user.id });
 
     reply
       .code(201)
@@ -102,7 +90,7 @@ async function createPost(request, reply) {
     reply
       .code(500)
       .send({
-        error: 'server error',
+        error: 'Server error',
         detail: error,
       });
   }
@@ -110,7 +98,19 @@ async function createPost(request, reply) {
 
 async function deletePost(request, reply) {
   const { postId } = request.params;
-  const { username } = request.body;
+  const user = {};
+
+  try {
+    const { user: { id } } = await request.jwtVerify();
+    user.id = id;
+  } catch ({ message }) {
+    reply
+      .code(401)
+      .send({
+        error: 'Not authorized',
+        detail: { message },
+      });
+  }
 
   try {
     yup.object({
@@ -119,12 +119,8 @@ async function deletePost(request, reply) {
         .required('postId is required')
         .integer('postId have to be integer')
         .positive('postId have to be positive'),
-      username: yup
-        .string()
-        .required('username is required')
-        .max(20, 'username max length is 20'),
     })
-      .validateSync({ postId, username });
+      .validateSync({ postId });
   } catch ({ message }) {
     reply
       .code(400)
@@ -137,10 +133,9 @@ async function deletePost(request, reply) {
   }
 
   try {
-    const userId = await this.getUserId(username);
     const [post] = await this.db('posts').where({ id: postId });
 
-    if (!!post && !!post.user_id && post.user_id !== userId) {
+    if (!!post && !!post.user_id && post.user_id !== user.id) {
       reply
         .code(403)
         .send({
@@ -152,7 +147,7 @@ async function deletePost(request, reply) {
     }
 
     const deletedPost = await this.db('posts')
-      .where({ id: postId, user_id: userId })
+      .where({ id: postId, user_id: user.id })
       .delete();
     if (deletedPost) {
       await this.db('comments')
@@ -169,7 +164,7 @@ async function deletePost(request, reply) {
     reply
       .code(500)
       .send({
-        error: 'server error',
+        error: 'Server error',
         detail: error,
       });
   }
@@ -177,7 +172,20 @@ async function deletePost(request, reply) {
 
 async function createComment(request, reply) {
   const { postId } = request.params;
-  const { username, text } = request.body;
+  const { text } = request.body;
+  const user = {};
+
+  try {
+    const { user: { id } } = await request.jwtVerify();
+    user.id = id;
+  } catch ({ message }) {
+    reply
+      .code(401)
+      .send({
+        error: 'Not authorized',
+        detail: { message },
+      });
+  }
 
   try {
     yup.object({
@@ -186,15 +194,11 @@ async function createComment(request, reply) {
         .required('postId is required')
         .integer('postId have to be integer')
         .positive('postId have to be positive'),
-      username: yup
-        .string()
-        .required('username is required')
-        .max(20, 'username max length is 20'),
       text: yup.string()
         .required('text is required')
         .max(255, 'text max length is 255'),
     })
-      .validateSync({ postId, username, text });
+      .validateSync({ postId, text });
   } catch ({ message }) {
     reply
       .code(400)
@@ -207,7 +211,6 @@ async function createComment(request, reply) {
   }
 
   try {
-    const userId = await this.getUserId(username);
     const [post] = await this.db('posts').where({ id: postId });
 
     if (!post) {
@@ -223,7 +226,7 @@ async function createComment(request, reply) {
 
     const id = await this.db('comments')
       .returning('id')
-      .insert({ post_id: postId, user_id: userId, text });
+      .insert({ post_id: postId, user_id: user.id, text });
 
     reply
       .code(201)
@@ -234,7 +237,7 @@ async function createComment(request, reply) {
     reply
       .code(500)
       .send({
-        error: 'server error',
+        error: 'Server error',
         detail: error,
       });
   }
@@ -242,7 +245,20 @@ async function createComment(request, reply) {
 
 async function deleteComment(request, reply) {
   const { postId, commentId } = request.params;
-  const { username } = request.body;
+  const user = {};
+
+  try {
+    const { user: { id } } = await request.jwtVerify();
+    user.id = id;
+  } catch ({ message }) {
+    reply
+      .code(401)
+      .send({
+        error: 'Not authorized',
+        detail: { message },
+      });
+  }
+
   try {
     yup.object({
       postId: yup
@@ -255,12 +271,8 @@ async function deleteComment(request, reply) {
         .required('commentId is required')
         .integer('commentId have to be integer')
         .positive('commentId have to be positive'),
-      username: yup
-        .string()
-        .required('username is required')
-        .max(20, 'username max length is 20'),
     })
-      .validateSync({ postId, commentId, username });
+      .validateSync({ postId, commentId });
   } catch ({ message }) {
     reply
       .code(400)
@@ -273,7 +285,6 @@ async function deleteComment(request, reply) {
   }
 
   try {
-    const userId = await this.getUserId(username);
     const [post] = await this.db('posts').where({ id: postId });
     if (!post) {
       reply
@@ -288,7 +299,7 @@ async function deleteComment(request, reply) {
 
     const [comment] = await this.db('comments').where({ id: commentId, post_id: postId });
 
-    if (!!comment && !!comment.user_id && comment.user_id !== userId) {
+    if (!!comment && !!comment.user_id && comment.user_id !== user.id) {
       reply
         .code(403)
         .send({
@@ -300,7 +311,7 @@ async function deleteComment(request, reply) {
     }
 
     await this.db('comments')
-      .where({ id: commentId, post_id: postId, user_id: userId })
+      .where({ id: commentId, post_id: postId, user_id: user.id })
       .update({ status: 'deleted' });
 
     reply
@@ -312,7 +323,7 @@ async function deleteComment(request, reply) {
     reply
       .code(500)
       .send({
-        error: 'server error',
+        error: 'Server error',
         detail: error,
       });
   }
