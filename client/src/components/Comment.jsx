@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import Icon from '@mdi/react';
 import { mdiDelete } from '@mdi/js';
-import { useAuth } from '../contexts/AuthProvider';
 import { deleteComment } from '../api';
 import fetchDataThunk from '../slices/fetchDataThunk';
 
@@ -12,7 +11,8 @@ function Comment({ comment }) {
   const {
     id,
     post_id: postId,
-    username: usernameComment,
+    user_id: commentUserId,
+    username: commentUsername,
     text,
     status,
     created_at: createdAt,
@@ -21,7 +21,7 @@ function Comment({ comment }) {
 
   const dispatch = useDispatch();
 
-  const { username } = useAuth();
+  const { token, id: userId } = useSelector((state) => state.user);
 
   const createdAtDate = moment(createdAt);
 
@@ -29,14 +29,14 @@ function Comment({ comment }) {
 
   const isDeleted = () => status === 'deleted';
 
-  const canDelete = () => username === usernameComment && !isDeleted();
+  const canDelete = () => userId === commentUserId && !isDeleted();
 
   const onDelete = (event) => {
     event.preventDefault();
-    return deleteComment({ username, postId, commentId: id })
+    return deleteComment({ token, postId, commentId: id })
       .then((response) => {
         if (response.status === 204) {
-          dispatch(fetchDataThunk(username));
+          dispatch(fetchDataThunk(token));
         }
       });
   };
@@ -49,7 +49,7 @@ function Comment({ comment }) {
             <img src="/images/default.jpg" className="img-fluid avatar-comment rounded-circle shadow" alt="img" />
           </span>
           <div>
-            <h6 className="mb-0"><span className="text-dark media-heading">{usernameComment}</span></h6>
+            <h6 className="mb-0"><span className="text-dark media-heading">{commentUsername}</span></h6>
             <small className="text-muted">{createdAtDate.fromNow()}</small>
             {' '}
             {isDeleted() && (
@@ -81,6 +81,7 @@ Comment.propTypes = {
   comment: PropTypes.shape({
     id: PropTypes.number,
     post_id: PropTypes.number,
+    user_id: PropTypes.number,
     username: PropTypes.string,
     text: PropTypes.string,
     status: PropTypes.string,
