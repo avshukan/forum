@@ -1,24 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Form, Button, Row, Col,
 } from 'react-bootstrap';
 import { createComment } from '../api';
 import fetchDataThunk from '../slices/fetchDataThunk';
-import { useAuth } from '../contexts/AuthProvider';
 import { hideCommenter, showComments } from '../slices/visabilitySlice';
 
 function Commenter({ postId }) {
   const dispatch = useDispatch();
 
-  const { username } = useAuth();
+  const { token } = useSelector((state) => state.user);
 
   const [text, setText] = useState('');
 
   const refText = useRef();
 
-  const canComment = () => Boolean(username);
+  const canComment = () => Boolean(token);
 
   const onChangeText = (event) => {
     setText(event.target.value);
@@ -30,13 +29,13 @@ function Commenter({ postId }) {
       return;
     }
 
-    const response = await createComment({ username, postId, text });
+    const response = await createComment({ token, postId, text });
 
     if (response.status === 201) {
       setText('');
       dispatch(hideCommenter());
       dispatch(showComments({ postId }));
-      dispatch(fetchDataThunk(username));
+      dispatch(fetchDataThunk(token));
     }
   };
 
