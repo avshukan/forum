@@ -32,7 +32,7 @@ function Post({ post }) {
 
   const isCommenterVisible = () => visibleCommenter === id;
 
-  const { token, id: userId } = useSelector(state => state.user);
+  const { token, id: userId } = useSelector((state) => state.user);
 
   const createdAtDate = moment(createdAt);
 
@@ -91,6 +91,7 @@ function Post({ post }) {
 Post.propTypes = {
   post: PropTypes.shape({
     id: PropTypes.number,
+    user_id: PropTypes.number,
     username: PropTypes.string,
     header: PropTypes.string,
     text: PropTypes.string,

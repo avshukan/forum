@@ -3,10 +3,13 @@ import { getPosts } from '../api';
 
 export default createAsyncThunk(
   'data/fetchData',
-  async (username) => {
-    if (!username) {
-      return [];
+  async (token, { rejectWithValue }) => {
+    const response = await getPosts(token);
+    if (!response.ok) {
+      console.log('response.error', response.error);
+      return rejectWithValue(response.data);
     }
-    return getPosts(username);
+    const posts = await response.json();
+    return posts;
   },
 );

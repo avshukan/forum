@@ -10,7 +10,7 @@ import { hidePoster } from '../slices/visabilitySlice';
 function Poster() {
   const dispatch = useDispatch();
 
-  const { token } = useSelector(state => state.user);
+  const { token } = useSelector((state) => state.user);
 
   const [header, setHeader] = useState('');
 

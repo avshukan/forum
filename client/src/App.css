@@ -88,8 +88,16 @@ h5,
   margin-left: 0;
 }
 
+.navbar-nav:first-child>.nav-item a {
+  padding-left: 0;
+}
+
 .navbar-nav:last-child>.nav-item {
   margin-right: 0;
+}
+
+.navbar-nav:last-child>.nav-item a {
+  padding-right: 0;
 }
 
 .nav-link {

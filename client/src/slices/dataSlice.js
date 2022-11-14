@@ -19,6 +19,7 @@ const dataSlice = createSlice({
     builder
       .addCase(fetchDataThunk.fulfilled, (state, action) => {
         const { payload } = action;
+        console.log('payload', payload);
         if (!_.isEmpty(payload)) {
           state.posts = [...payload];
         }

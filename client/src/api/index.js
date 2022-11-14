@@ -27,9 +27,8 @@ export const signup = (data) => {
 export const getPosts = (token) => {
   const { href } = new URL('posts', baseUrl);
   return fetch(href, {
-    headers: header(token),
-  })
-    .then((response) => response.json());
+    headers: token ? header(token) : { 'Content-Type': 'application/json;charset=utf-8' },
+  });
 };
 
 export const createPost = ({ token, ...data }) => {

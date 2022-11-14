@@ -16,6 +16,7 @@ function Posts() {
   const visbilityPost = useSelector((store) => store.visability.poster);
 
   useEffect(() => {
+    console.log('useEffect token');
     dispatch(fetchDataThunk(token));
 
     const intervalId = setInterval(() => {
