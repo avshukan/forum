@@ -1,17 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Row, Col, Form, Button,
 } from 'react-bootstrap';
 import { createPost } from '../api';
 import fetchDataThunk from '../slices/fetchDataThunk';
-import { useAuth } from '../contexts/AuthProvider';
 import { hidePoster } from '../slices/visabilitySlice';
 
 function Poster() {
   const dispatch = useDispatch();
 
-  const { token, username } = useAuth();
+  const { token } = useSelector(state => state.user);
 
   const [header, setHeader] = useState('');
 
@@ -19,7 +18,7 @@ function Poster() {
 
   const headerRef = useRef();
 
-  const canPost = () => Boolean(username);
+  const canPost = () => Boolean(token);
 
   const onChangeHeader = (event) => {
     setHeader(event.target.value);
@@ -35,12 +34,12 @@ function Poster() {
       return;
     }
 
-    const response = await createPost(token, { username, header, text });
+    const response = await createPost({ token, header, text });
     if (response.status === 201) {
       setHeader('');
       setText('');
       dispatch(hidePoster());
-      dispatch(fetchDataThunk(username));
+      dispatch(fetchDataThunk(token));
     }
   };
 
