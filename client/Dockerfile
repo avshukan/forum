@@ -1,5 +1,5 @@
 # builder
-FROM node:18 as builder
+FROM node as builder
 
 ARG NODE_ENV
 ENV NODE_ENV $NODE_ENV
