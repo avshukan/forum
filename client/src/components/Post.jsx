@@ -5,7 +5,6 @@ import moment from 'moment';
 import Icon from '@mdi/react';
 import { mdiDelete, mdiReply } from '@mdi/js';
 import Comments from './Comments';
-import { useAuth } from '../contexts/AuthProvider';
 import { deletePost } from '../api';
 import fetchDataThunk from '../slices/fetchDataThunk';
 import Commenter from './Commenter';
@@ -14,7 +13,13 @@ import { hidePoster, showCommenter } from '../slices/visabilitySlice';
 
 function Post({ post }) {
   const {
-    id, username: usernamePost, header, text, created_at: createdAt, comments,
+    id,
+    user_id: postUserId,
+    username: postUsername,
+    header,
+    text,
+    created_at: createdAt,
+    comments,
   } = post;
 
   const dispatch = useDispatch();
@@ -27,21 +32,21 @@ function Post({ post }) {
 
   const isCommenterVisible = () => visibleCommenter === id;
 
-  const { username } = useAuth();
+  const { token, id: userId } = useSelector(state => state.user);
 
   const createdAtDate = moment(createdAt);
 
-  const canDelete = () => username === usernamePost;
+  const canDelete = () => userId === postUserId;
 
   const onClickReply = () => {
     dispatch(hidePoster());
     dispatch(showCommenter({ postId: id }));
   };
 
-  const onDelete = () => deletePost({ username, postId: id })
+  const onDelete = () => deletePost({ token, postId: id })
     .then((response) => {
       if (response.status === 204) {
-        dispatch(fetchDataThunk(username));
+        dispatch(fetchDataThunk(token));
       }
     });
 
@@ -53,7 +58,7 @@ function Post({ post }) {
             <img src="images/default.jpg" className="img-fluid avatar-post rounded-circle shadow" alt="img" />
           </span>
           <div className="d-flex flex-column">
-            <h6 className="mb-0"><span className="media-heading text-dark">{usernamePost}</span></h6>
+            <h6 className="mb-0"><span className="media-heading text-dark">{postUsername}</span></h6>
             <small className="text-muted">{createdAtDate.fromNow()}</small>
             <CommentsCounter postId={id} />
           </div>
