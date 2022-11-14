@@ -27,6 +27,7 @@ services:
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
         PORT: ${PORT}
         CORS_HOSTNAME: ${CORS_HOSTNAME}
+        JWT_KEY: ${JWT_KEY}
     ports:
       - '5000:5000'
     # env_file:
