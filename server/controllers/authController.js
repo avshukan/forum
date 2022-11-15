@@ -32,13 +32,12 @@ async function signup(request, reply) {
 }
 
 async function login(request, reply) {
-  console.log('login controller');
   const { username, password } = request.body;
   try {
     const users = await this.db('users')
       .select('id', 'salt', 'passhash')
       .where('username', username);
-    console.log('users', users);
+
     if (users.length === 0) {
       reply
         .code(404)
@@ -48,6 +47,7 @@ async function login(request, reply) {
         });
       return;
     }
+
     const [{ id, salt, passhash }] = users;
     if (passhash !== bcrypt.hashSync(password, salt)) {
       reply
@@ -56,12 +56,44 @@ async function login(request, reply) {
           error: 'Wrong password',
           detail: { username },
         });
+
       return;
     }
+
     const token = this.jwt.sign({ user: { id, username } });
     this.log.info({ token });
 
     reply
+      .setCookie('token2', token, { path: '/' })
+      // .setCookie('foo', 'foo', {
+      //   domain: 'example.com',
+      //   path: '/',
+      // })
+      .setCookie('a', 'a', {
+        httpOnly: true,
+      })
+      .setCookie('a3000', 'a3000', {
+        domain: 'localhost:3000',
+        path: '/',
+      })
+      .setCookie('a5000', 'a5000', {
+        domain: 'localhost:5000',
+        path: '/',
+      })
+      .setCookie('l', 'l', {
+        domain: '.localhost',
+        path: '/',
+      })
+      // .setCookie('foo3', 'foo3', {
+      //   domain: '127.0.0.1',
+      //   path: '/',
+      // })
+      .cookie('baz', 'baz')
+      // .setCookie('bar', 'bar', {
+      //   path: '/',
+      //   signed: true,
+      // })
+      // .setCookie('bar2', 'bar', { httpOnly: true })
       .send({ token, id, username });
 
     return;
