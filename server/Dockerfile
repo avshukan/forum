@@ -1,5 +1,7 @@
 FROM node:18-alpine
 
+RUN npm install npm@latest -g
+
 ARG NODE_ENV
 ENV NODE_ENV $NODE_ENV
 ARG POSTGRES_HOSTNAME
@@ -23,10 +25,10 @@ WORKDIR /usr/src/server
 
 COPY . /usr/src/server
 
-RUN npm install npm@latest -g
-
-RUN npm install
+RUN npm install --verbose
 
 # CMD [ "make", "migrate"]
 
-ENTRYPOINT ["make", "start"]
+# ENTRYPOINT ["make", "start"]
+
+ENTRYPOINT ["npm", "run", "start"]

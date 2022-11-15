@@ -1,6 +1,8 @@
 # builder
 FROM node:18-alpine as builder
 
+RUN npm install npm@latest -g
+
 ARG NODE_ENV
 ENV NODE_ENV $NODE_ENV
 
@@ -13,8 +15,6 @@ ENV REACT_APP_API_BASE $REACT_APP_API_BASE
 WORKDIR /app
 
 COPY . .
-
-RUN npm install npm@latest -g
 
 RUN npm ci 
 
