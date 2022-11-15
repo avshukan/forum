@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:18
 
 RUN npm install npm@latest -g
 
@@ -29,6 +29,6 @@ RUN npm install --verbose
 
 # CMD [ "make", "migrate"]
 
-# ENTRYPOINT ["make", "start"]
+ENTRYPOINT ["make", "start"]
 
-ENTRYPOINT ["npm", "run", "start"]
+# ENTRYPOINT ["npm", "run", "start"]

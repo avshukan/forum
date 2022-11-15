@@ -16,7 +16,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm ci 
+RUN npm install --verbose
 
 RUN npm run build --verbose
 
