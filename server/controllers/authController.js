@@ -63,8 +63,54 @@ async function login(request, reply) {
     const token = this.jwt.sign({ user: { id, username } });
     this.log.info({ token });
 
+    // Website you wish to allow to connect
+    reply.header('Access-Control-Allow-Origin', '*');
+    // Request methods you wish to allow
+    reply.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    // Request headers you wish to allow
+    reply.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,content-type,set-cookie');
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    reply.header('Access-Control-Allow-Credentials', true);
+    reply.header('Content-Type', 'application/json; charset=utf-8');
+
     reply
-      .setCookie('token2', token, { path: '/' })
+      .setCookie('token01', token, { path: '/' })
+      .setCookie('token02', token, { domain: 'http://localhost:5000', path: '/' })
+      .setCookie('token03', token, { domain: 'http://localhost:5000/', path: '/' })
+      .setCookie('token04', token, { domain: 'http://localhost:3000', path: '/' })
+      .setCookie('token05', token, { domain: 'http://localhost:3000/', path: '/' })
+      .setCookie('token06', token, { domain: 'http://127.0.0.1:5000', path: '/' })
+      .setCookie('token07', token, { domain: 'http://127.0.0.1:5000/', path: '/' })
+      .setCookie('token08', token, { domain: 'http://127.0.0.1:3000', path: '/' })
+      .setCookie('token09', token, { domain: 'http://127.0.0.1:3000/', path: '/' })
+
+      .setCookie('token12', token, { domain: 'http://localhost', path: '/' })
+      .setCookie('token13', token, { domain: 'http://localhost/', path: '/' })
+      .setCookie('token14', token, { domain: 'http://localhost', path: '/' })
+      .setCookie('token15', token, { domain: 'http://localhost/', path: '/' })
+      .setCookie('token16', token, { domain: 'http://127.0.0.1', path: '/' })
+      .setCookie('token17', token, { domain: 'http://127.0.0.1/', path: '/' })
+      .setCookie('token18', token, { domain: 'http://127.0.0.1', path: '/' })
+      .setCookie('token19', token, { domain: 'http://127.0.0.1/', path: '/' })
+
+      .setCookie('token21', token, { domain: 'forum.avshukan.ru', path: '/' })
+      .setCookie('token22', token, { domain: 'forum-api.avshukan.ru', path: '/' })
+      .setCookie('token23', token, { domain: 'http://forum.avshukan.ru', path: '/' })
+      .setCookie('token24', token, { domain: 'http://forum-api.avshukan.ru', path: '/' })
+      .setCookie('token25', token, { domain: 'http://forum.avshukan.ru:3000', path: '/' })
+      .setCookie('token26', token, { domain: 'http://forum-api.avshukan.ru:3000', path: '/' })
+      .setCookie('token27', token, { domain: 'http://forum.avshukan.ru:5000', path: '/' })
+      .setCookie('token28', token, { domain: 'http://forum-api.avshukan.ru:5000', path: '/' })
+
+      .setCookie('token31', token, { domain: 'forum.avshukan.ru/', path: '/' })
+      .setCookie('token32', token, { domain: 'forum-api.avshukan.ru/', path: '/' })
+      .setCookie('token33', token, { domain: 'http://forum.avshukan.ru/', path: '/' })
+      .setCookie('token34', token, { domain: 'http://forum-api.avshukan.ru/', path: '/' })
+      .setCookie('token35', token, { domain: 'http://forum.avshukan.ru:3000/', path: '/' })
+      .setCookie('token36', token, { domain: 'http://forum-api.avshukan.ru:3000/', path: '/' })
+      .setCookie('token37', token, { domain: 'http://forum.avshukan.ru:5000/', path: '/' })
+      .setCookie('token38', token, { domain: 'http://forum-api.avshukan.ru:5000/', path: '/' })
       // .setCookie('foo', 'foo', {
       //   domain: 'example.com',
       //   path: '/',
@@ -84,10 +130,10 @@ async function login(request, reply) {
         domain: '.localhost',
         path: '/',
       })
-      // .setCookie('foo3', 'foo3', {
-      //   domain: '127.0.0.1',
-      //   path: '/',
-      // })
+      .setCookie('foo3', 'foo3', {
+        domain: '127.0.0.1',
+        path: '/',
+      })
       .cookie('baz', 'baz')
       // .setCookie('bar', 'bar', {
       //   path: '/',
@@ -97,12 +143,13 @@ async function login(request, reply) {
       .send({ token, id, username });
 
     return;
-  } catch (error) {
+  } catch ({ message }) {
+    this.log.error({ message });
     reply
       .code(500)
       .send({
         error: 'server error',
-        detail: error,
+        detail: message,
       });
   }
 }
