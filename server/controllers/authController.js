@@ -71,7 +71,7 @@ async function login(request, reply) {
     reply.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,content-type,set-cookie');
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
-    reply.header('Access-Control-Allow-Credentials', true);
+    // reply.header('Access-Control-Allow-Credentials', true);
     reply.header('Content-Type', 'application/json; charset=utf-8');
 
     reply
