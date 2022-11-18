@@ -45,8 +45,6 @@ services:
         JWT_KEY: ${JWT_KEY}
     ports:
       - '5000:5000'
-    # env_file:
-    #   - .env.server
     restart: always
     depends_on:
       - forum_db
