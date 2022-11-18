@@ -60,19 +60,27 @@ async function login(request, reply) {
       return;
     }
 
+    this.log.info({ message: 'user and pass are good' });
+
     const token = this.jwt.sign({ user: { id, username } });
     this.log.info({ token });
 
     // Website you wish to allow to connect
     reply.header('Access-Control-Allow-Origin', '*');
+    this.log.info({ message: 'header Access-Control-Allow-Origin' });
     // Request methods you wish to allow
     reply.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    this.log.info({ message: 'header Access-Control-Allow-Methods' });
     // Request headers you wish to allow
     reply.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,content-type,set-cookie');
+    this.log.info({ message: 'header Access-Control-Allow-Headers' });
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
     // reply.header('Access-Control-Allow-Credentials', true);
     reply.header('Content-Type', 'application/json; charset=utf-8');
+    this.log.info({ message: 'header Content-Type' });
+
+    this.log.info({ message: 'before cookie' });
 
     reply
       .setCookie('token01', token, { path: '/' })
@@ -111,10 +119,6 @@ async function login(request, reply) {
       .setCookie('token36', token, { domain: 'http://forum-api.avshukan.ru:3000/', path: '/' })
       .setCookie('token37', token, { domain: 'http://forum.avshukan.ru:5000/', path: '/' })
       .setCookie('token38', token, { domain: 'http://forum-api.avshukan.ru:5000/', path: '/' })
-      // .setCookie('foo', 'foo', {
-      //   domain: 'example.com',
-      //   path: '/',
-      // })
       .setCookie('a', 'a', {
         httpOnly: true,
       })
@@ -130,26 +134,22 @@ async function login(request, reply) {
         domain: '.localhost',
         path: '/',
       })
-      .setCookie('foo3', 'foo3', {
-        domain: '127.0.0.1',
-        path: '/',
-      })
-      .cookie('baz', 'baz')
-      // .setCookie('bar', 'bar', {
-      //   path: '/',
-      //   signed: true,
-      // })
-      // .setCookie('bar2', 'bar', { httpOnly: true })
+      .cookie('baz', 'baz');
+
+    this.log.info({ message: 'before send' });
+
+    reply
       .send({ token, id, username });
 
     return;
-  } catch ({ message }) {
-    this.log.error({ message });
+  } catch (error) {
+    this.log.error({ error });
+
     reply
       .code(500)
       .send({
-        error: 'server error',
-        detail: message,
+        error: 'Server error',
+        detail: error.message,
       });
   }
 }
