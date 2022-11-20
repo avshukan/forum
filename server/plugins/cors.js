@@ -19,5 +19,6 @@ module.exports = fp(async (fastify, _opts) => {
       // // Generate an error on other origins, disabling access
       // cb(new Error('Not allowed'), false);
     },
+    credentials: true,
   });
 });

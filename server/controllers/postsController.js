@@ -30,6 +30,8 @@ async function getPosts(request, reply) {
         })),
     }));
 
+    reply.header('set-cookie', 'posts=posts');
+
     reply
       .send(result);
 
