@@ -10,6 +10,7 @@ export const login = (data) => {
   const { href } = new URL(['auth', 'login'].join('/'), baseUrl);
   return fetch(href, {
     method: 'POST',
+    credentials: 'include',
     headers: { 'Content-Type': 'application/json;charset=utf-8' },
     body: JSON.stringify(data),
   });
@@ -27,6 +28,8 @@ export const signup = (data) => {
 export const getPosts = (token) => {
   const { href } = new URL('posts', baseUrl);
   return fetch(href, {
+    credentials: 'include',
+    // credentials: true,
     headers: token ? header(token) : { 'Content-Type': 'application/json;charset=utf-8' },
   });
 };

@@ -30,7 +30,13 @@ async function getPosts(request, reply) {
         })),
     }));
 
+    reply.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    this.log.info({ message: 'header Access-Control-Allow-Origin' });
+
     reply.header('set-cookie', 'posts=posts');
+    reply.setCookie('new', 'value');
+    reply.setCookie('two', '2');
+    reply.setCookie('three', '3');
 
     reply
       .send(result);

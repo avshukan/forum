@@ -65,24 +65,31 @@ async function login(request, reply) {
     const token = this.jwt.sign({ user: { id, username } });
     this.log.info({ token });
 
-    // Website you wish to allow to connect
-    reply.header('Access-Control-Allow-Origin', '*');
-    this.log.info({ message: 'header Access-Control-Allow-Origin' });
-    // Request methods you wish to allow
-    reply.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    this.log.info({ message: 'header Access-Control-Allow-Methods' });
-    // Request headers you wish to allow
-    reply.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,content-type,set-cookie');
-    this.log.info({ message: 'header Access-Control-Allow-Headers' });
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
-    reply.header('Access-Control-Allow-Credentials', true);
-    reply.header('Content-Type', 'application/json; charset=utf-8');
-    this.log.info({ message: 'header Content-Type' });
+    // // Website you wish to allow to connect
+    // reply.header('Access-Control-Allow-Origin', '*');
+    // this.log.info({ message: 'header Access-Control-Allow-Origin' });
+    // // Request methods you wish to allow
+    // reply.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    // this.log.info({ message: 'header Access-Control-Allow-Methods' });
+    // // Request headers you wish to allow
+    // reply.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,content-type,set-cookie');
+    // this.log.info({ message: 'header Access-Control-Allow-Headers' });
+    // // Set to true if you need the website to include cookies in the requests sent
+    // // to the API (e.g. in case you use sessions)
+    // reply.header('Access-Control-Allow-Credentials', true);
+    // reply.header('Content-Type', 'application/json; charset=utf-8');
+    // this.log.info({ message: 'header Content-Type' });
 
-    this.log.info({ message: 'before cookie' });
-    reply.header('set-cookie', 'token=token');
-    reply.header('set-cookie', 'token12=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1LCJ1c2VybmFtZSI6IkFsaWNlIn0sImlhdCI6MTY2ODg0NDM4M30.k5QaMVal7_hmEI681EbnQX_LJUucimcTO6jtVJO8GHg; Domain=http://localhost; Path=/');
+    // this.log.info({ message: 'before cookie' });
+    // reply.header('set-cookie', 'token=token');
+    // reply.header('set-cookie', 'token12=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1LCJ1c2VybmFtZSI6IkFsaWNlIn0sImlhdCI6MTY2ODg0NDM4M30.k5QaMVal7_hmEI681EbnQX_LJUucimcTO6jtVJO8GHg; Domain=http://localhost; Path=/');
+
+
+    reply.header('Access-Control-Allow-Origin', 'http://forum.avshukan.ru');
+    this.log.info({ message: 'header Access-Control-Allow-Origin' });
+    reply.setCookie('token', token);
+    this.log.info({ message: 'set cookie token' });
+
     /*
         reply
           .setCookie('token01', token, { path: '/' })
