@@ -42,6 +42,7 @@ services:
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
         PORT: ${PORT}
         CORS_HOSTNAME: ${CORS_HOSTNAME}
+        FRONTEND_ORIGIN: ${FRONTEND_ORIGIN}
         JWT_KEY: ${JWT_KEY}
     ports:
       - '5000:5000'
