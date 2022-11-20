@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
 
+const { FRONTEND_ORIGIN } = process.env;
+
 async function signup(request, reply) {
   this.log.info({ msg: 'signup controller' });
   const { username, email, password } = request.body;
@@ -81,13 +83,11 @@ async function login(request, reply) {
     // this.log.info({ message: 'header Content-Type' });
 
     // this.log.info({ message: 'before cookie' });
-    // reply.header('set-cookie', 'token=token');
-    // reply.header('set-cookie', 'token12=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1LCJ1c2VybmFtZSI6IkFsaWNlIn0sImlhdCI6MTY2ODg0NDM4M30.k5QaMVal7_hmEI681EbnQX_LJUucimcTO6jtVJO8GHg; Domain=http://localhost; Path=/');
 
-
-    reply.header('Access-Control-Allow-Origin', 'http://forum.avshukan.ru');
+    reply.header('Access-Control-Allow-Origin', FRONTEND_ORIGIN);
     this.log.info({ message: 'header Access-Control-Allow-Origin' });
     reply.setCookie('token', token);
+    reply.setCookie('login first', '1');
     this.log.info({ message: 'set cookie token' });
 
     /*
