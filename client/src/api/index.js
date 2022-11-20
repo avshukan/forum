@@ -1,7 +1,5 @@
-const { NODE_ENV, REACT_APP_API_URL, REACT_APP_API_BASE } = process.env;
-const baseUrl = NODE_ENV === 'production'
-  ? new URL('/api/v1', 'http://forum-api.avshukan.ru/')
-  : new URL(REACT_APP_API_URL, REACT_APP_API_BASE);
+const { REACT_APP_API_URL, REACT_APP_API_BASE } = process.env;
+const baseUrl = new URL(REACT_APP_API_URL, REACT_APP_API_BASE);
 
 const header = (token) => ({
   'Content-Type': 'application/json;charset=utf-8',
