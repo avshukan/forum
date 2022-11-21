@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 services:
   forum_frontend:
     container_name: forum_frontend
@@ -6,12 +6,11 @@ services:
     build:
       context: ./client
       args:
-        NODE_ENV: ${NODE_ENV}
         REACT_APP_API_URL: ${REACT_APP_API_URL}
         REACT_APP_API_BASE: ${REACT_APP_API_BASE}
     ports:
       - '3000:3000'
-    restart: always
+    # restart: always
     depends_on:
       - forum_backend
 
@@ -23,7 +22,7 @@ services:
       dockerfile: DockerfileNginxOnly
     ports:
       - '3000:3000'
-    restart: always
+    # restart: always
 
   forum_backend:
     container_name: forum_backend
@@ -42,20 +41,17 @@ services:
         JWT_KEY: ${JWT_KEY}
     ports:
       - '5000:5000'
-    restart: always
+    # restart: always
     depends_on:
-      - forum_db
+      - forum_postgres
 
-  forum_db:
-    container_name: forum_db
-    hostname: postgres
-    image: 'postgres:13'
+  forum_postgres:
+    container_name: forum_postgres
+    hostname: forum_postgres
+    image: postgres:13.3
+    env_file: .env
+    volumes:
+      - ../forum_data:/var/lib/postgresql/data
     ports:
       - '5432:5432'
-    env_file: .env
-    restart: always
-    volumes:
-      - fastify_volume:/var/lib/postgres/data
-
-volumes:
-  fastify_volume: {}
+    # restart: always

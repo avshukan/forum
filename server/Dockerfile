@@ -29,7 +29,7 @@ COPY . /usr/src/server
 
 RUN npm install --verbose
 
-CMD [ "make", "migrate"]
+# CMD [ "make", "migrate"]
 
 ENTRYPOINT ["make", "start"]
 
