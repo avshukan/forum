@@ -1,6 +1,6 @@
 FROM node:18
 
-RUN npm install npm@latest -g
+# RUN npm install npm@latest -g
 
 ARG NODE_ENV
 ENV NODE_ENV $NODE_ENV
@@ -29,7 +29,7 @@ COPY . /usr/src/server
 
 RUN npm install --verbose
 
-# CMD [ "make", "migrate"]
+CMD [ "make", "migrate"]
 
 ENTRYPOINT ["make", "start"]
 
