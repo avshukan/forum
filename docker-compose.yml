@@ -6,7 +6,7 @@ services:
     build:
       context: ./client
       args:
-        # NODE_ENV: ${NODE_ENV}
+        NODE_ENV: ${NODE_ENV}
         REACT_APP_API_URL: ${REACT_APP_API_URL}
         REACT_APP_API_BASE: ${REACT_APP_API_BASE}
     ports:
@@ -15,16 +15,12 @@ services:
     depends_on:
       - forum_backend
 
-  forum_frontend_tmp:
-    container_name: forum_frontend_tmp
-    image: 'forum_frontend_tmp'
+  forum_nginx_only:
+    container_name: forum_nginx_only
+    image: 'forum_nginx_only'
     build:
       context: ./client
-      dockerfile: DockerfileTmp
-      args:
-        # NODE_ENV: ${NODE_ENV}
-        REACT_APP_API_URL: ${REACT_APP_API_URL}
-        REACT_APP_API_BASE: ${REACT_APP_API_BASE}
+      dockerfile: DockerfileNginxOnly
     ports:
       - '3000:3000'
     restart: always
@@ -42,6 +38,7 @@ services:
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
         PORT: ${PORT}
         CORS_HOSTNAME: ${CORS_HOSTNAME}
+        FRONTEND_ORIGIN: ${FRONTEND_ORIGIN}
         JWT_KEY: ${JWT_KEY}
     ports:
       - '5000:5000'

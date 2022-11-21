@@ -18,6 +18,7 @@
     ],
     "ignorePatterns": [
         "**/build/*",
+        "**/buildTmp/*",
         "**/node_modules/*"
     ],
     "rules": {

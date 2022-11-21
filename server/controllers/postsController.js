@@ -1,6 +1,8 @@
 const yup = require('yup');
 const getUsernameById = require('../helpers/getUsernameById');
 
+const { FRONTEND_ORIGIN } = process.env;
+
 async function getPosts(request, reply) {
   const user = {};
 
@@ -29,6 +31,14 @@ async function getPosts(request, reply) {
           username: getUsernameById(users, commentUserId),
         })),
     }));
+
+    reply.header('Access-Control-Allow-Origin', FRONTEND_ORIGIN);
+    this.log.info({ message: 'header Access-Control-Allow-Origin' });
+
+    reply.header('set-cookie', 'posts=posts');
+    reply.setCookie('new', 'value');
+    reply.setCookie('two', '2');
+    reply.setCookie('three', '3');
 
     reply
       .send(result);

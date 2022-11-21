@@ -1,6 +1,6 @@
 FROM node:18
 
-RUN npm install npm@latest -g
+# RUN npm install npm@latest -g
 
 ARG NODE_ENV
 ENV NODE_ENV $NODE_ENV
@@ -16,6 +16,8 @@ ARG PORT
 ENV PORT $PORT
 ARG CORS_HOSTNAME
 ENV CORS_HOSTNAME $CORS_HOSTNAME
+ARG FRONTEND_ORIGIN
+ENV FRONTEND_ORIGIN $FRONTEND_ORIGIN
 ARG JWT_KEY
 ENV JWT_KEY $JWT_KEY
 
@@ -27,7 +29,7 @@ COPY . /usr/src/server
 
 RUN npm install --verbose
 
-# CMD [ "make", "migrate"]
+CMD [ "make", "migrate"]
 
 ENTRYPOINT ["make", "start"]
 
