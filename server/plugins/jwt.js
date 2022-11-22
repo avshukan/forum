@@ -14,8 +14,8 @@ module.exports = fp(async (fastify, _opts) => {
 
   fastify.decorate('authenticate', async (request, reply) => {
     try {
-      const decode = await request.jwtVerify();
-      fastify.log.info({ decode });
+      await request.jwtVerify();
+      fastify.log.info({ message: 'success verification' });
     } catch (error) {
       reply.send(error);
     }

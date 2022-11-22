@@ -10,7 +10,6 @@ module.exports = fp(async (fastify, _opts) => {
   fastify.register(cors, {
     origin: (origin, cb) => {
       const { protocol, hostname, port } = new URL(origin);
-      console.log('{ protocol, hostname, port }', { protocol, hostname, port });
       if (protocol === frontendProtocol && hostname === frontendHostname && port === frontendPort) {
         //  Request will pass
         cb(null, true);

@@ -3,8 +3,8 @@ const bcrypt = require('bcrypt');
 const { FRONTEND_ORIGIN } = process.env;
 
 async function signup(request, reply) {
-  this.log.info({ msg: 'signup controller' });
   const { username, email, password } = request.body;
+
   try {
     const salt = bcrypt.genSaltSync();
     const passhash = bcrypt.hashSync(password, salt);
@@ -13,9 +13,8 @@ async function signup(request, reply) {
       .insert({
         username, email, salt, passhash,
       });
-    this.log.info({ id });
     const token = this.jwt.sign({ user: { id, username } });
-    this.log.info({ token });
+
     reply
       .code(201)
       .send({ token, id, username });
@@ -23,6 +22,7 @@ async function signup(request, reply) {
     return;
   } catch ({ message }) {
     this.log.error({ message });
+
     reply
       .code(500)
       .send({
@@ -34,23 +34,29 @@ async function signup(request, reply) {
 
 async function login(request, reply) {
   const { username, password } = request.body;
+
   try {
     const users = await this.db('users')
       .select('id', 'salt', 'passhash')
       .where('username', username);
 
     if (users.length === 0) {
+      this.log.error({ message: `User "${username}" not found` });
+
       reply
         .code(404)
         .send({
           error: 'User not found',
           detail: { username },
         });
+
       return;
     }
 
     const [{ id, salt, passhash }] = users;
     if (passhash !== bcrypt.hashSync(password, salt)) {
+      this.log.error({ message: `Wrong password for user "${username}"` });
+
       reply
         .code(401)
         .send({
@@ -61,13 +67,14 @@ async function login(request, reply) {
       return;
     }
 
-    this.log.info({ message: 'user and pass are good' });
     const token = this.jwt.sign({ user: { id, username } });
-    this.log.info({ token });
-    reply.header('Access-Control-Allow-Origin', FRONTEND_ORIGIN);
-    this.log.info({ message: 'header Access-Control-Allow-Origin' });
-    reply.setCookie('token', token, { path: '/' });
-    this.log.info({ message: 'set cookie token' });
+
+    reply
+      .header('Access-Control-Allow-Origin', FRONTEND_ORIGIN);
+
+    reply
+      .setCookie('token', token, { path: '/' });
+
     reply
       .send({ id, username });
 
