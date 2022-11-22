@@ -43,10 +43,10 @@ function Post({ post }) {
     dispatch(showCommenter({ postId: id }));
   };
 
-  const onDelete = () => deletePost({ token: null, postId: id })
+  const onDelete = () => deletePost({ postId: id })
     .then((response) => {
       if (response.status === 204) {
-        dispatch(fetchDataThunk(null));
+        dispatch(fetchDataThunk());
       }
     });
 

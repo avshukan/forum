@@ -33,7 +33,8 @@ function Login() {
     // need to check password confirmation
     // need to check minimal length and email format
     const { username, password } = data;
-    const response = dispatch(loginThunk({ username, password }));
+    dispatch(loginThunk({ username, password }));
+    // const response = dispatch(loginThunk({ username, password }));
     // if (response.status === 201) {
     //   do something
     // }

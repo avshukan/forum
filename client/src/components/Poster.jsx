@@ -35,7 +35,7 @@ function Poster() {
       return;
     }
 
-    const response = await createPost({ token: null, header, text });
+    const response = await createPost({ header, text });
     if (response.status === 201) {
       setHeader('');
       setText('');

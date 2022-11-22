@@ -19,10 +19,14 @@ const dataSlice = createSlice({
     builder
       .addCase(fetchDataThunk.fulfilled, (state, action) => {
         const { payload } = action;
-        console.log('payload', payload);
+        console.log('fetchDataThunk.fulfilled payload', payload);
         if (!_.isEmpty(payload)) {
           state.posts = [...payload];
         }
+      })
+      .addCase(fetchDataThunk.rejected, (state, action) => {
+        const { payload } = action;
+        console.log('fetchDataThunk.rejected payload', payload);
       });
   },
 });

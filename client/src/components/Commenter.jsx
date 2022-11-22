@@ -30,13 +30,13 @@ function Commenter({ postId }) {
       return;
     }
 
-    const response = await createComment({ token: null, postId, text });
+    const response = await createComment({ postId, text });
 
     if (response.status === 201) {
       setText('');
       dispatch(hideCommenter());
       dispatch(showComments({ postId }));
-      dispatch(fetchDataThunk(null));
+      dispatch(fetchDataThunk());
     }
   };
 

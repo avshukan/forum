@@ -33,10 +33,10 @@ function Comment({ comment }) {
 
   const onDelete = (event) => {
     event.preventDefault();
-    return deleteComment({ token: null, postId, commentId: id })
+    return deleteComment({ postId, commentId: id })
       .then((response) => {
         if (response.status === 204) {
-          dispatch(fetchDataThunk(null));
+          dispatch(fetchDataThunk());
         }
       });
   };

@@ -3,7 +3,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import loginThunk from './loginThunk';
 
 const initialState = {
-  token: '',
   id: 0,
   username: 'Guest',
 };
@@ -13,8 +12,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     logout: (state, _action) => {
-      const { token, id, username } = initialState;
-      state.token = token;
+      const { id, username } = initialState;
       state.id = id;
       state.username = username;
     },
@@ -22,16 +20,14 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(loginThunk.fulfilled, (state, action) => {
-        const { payload: { token, id, username } } = action;
-        state.token = token;
+        const { payload: { id, username } } = action;
         state.id = id;
         state.username = username;
       })
       .addCase(loginThunk.rejected, (state, action) => {
         const { payload } = action;
         console.log('rejected payload', payload);
-        const { token, id, username } = initialState;
-        state.token = token;
+        const { id, username } = initialState;
         state.id = id;
         state.username = username;
       });

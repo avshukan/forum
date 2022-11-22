@@ -13,7 +13,6 @@ async function signup(request, reply) {
       .insert({
         username, email, salt, passhash,
       });
-    console.log('id', id);
     this.log.info({ id });
     const token = this.jwt.sign({ user: { id, username } });
     this.log.info({ token });
