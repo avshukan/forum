@@ -1,23 +1,23 @@
 const fp = require('fastify-plugin');
 const cors = require('@fastify/cors');
 
-const { CORS_HOSTNAME } = process.env;
+const { FRONTEND_ORIGIN } = process.env;
+const { protocol: frontendProtocol, hostname: frontendHostname, port: frontendPort } = new URL(FRONTEND_ORIGIN);
 
 // the use of fastify-plugin is required to be able
 // to export the decorators to the outer scope
-
 module.exports = fp(async (fastify, _opts) => {
   fastify.register(cors, {
     origin: (origin, cb) => {
-      cb(null, true);
-      // const { hostname } = new URL(origin);
-      // if (hostname === CORS_HOSTNAME) {
-      //   //  Request from CORS_HOSTNAME will pass
-      //   cb(null, true);
-      //   return;
-      // }
-      // // Generate an error on other origins, disabling access
-      // cb(new Error('Not allowed'), false);
+      const { protocol, hostname, port } = new URL(origin);
+      console.log('{ protocol, hostname, port }', { protocol, hostname, port });
+      if (protocol === frontendProtocol && hostname === frontendHostname && port === frontendPort) {
+        //  Request will pass
+        cb(null, true);
+        return;
+      }
+      // Generate an error on other origins, disabling access
+      cb(new Error('Not allowed'), false);
     },
     credentials: true,
     methods: ['GET', 'POST', 'DELETE'],
