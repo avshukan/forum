@@ -32,7 +32,7 @@ function Post({ post }) {
 
   const isCommenterVisible = () => visibleCommenter === id;
 
-  const { token, id: userId } = useSelector((state) => state.user);
+  const { id: userId } = useSelector((state) => state.user);
 
   const createdAtDate = moment(createdAt);
 
@@ -43,10 +43,10 @@ function Post({ post }) {
     dispatch(showCommenter({ postId: id }));
   };
 
-  const onDelete = () => deletePost({ token, postId: id })
+  const onDelete = () => deletePost({ token: null, postId: id })
     .then((response) => {
       if (response.status === 204) {
-        dispatch(fetchDataThunk(token));
+        dispatch(fetchDataThunk(null));
       }
     });
 

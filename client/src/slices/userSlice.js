@@ -30,9 +30,10 @@ const userSlice = createSlice({
       .addCase(loginThunk.rejected, (state, action) => {
         const { payload } = action;
         console.log('rejected payload', payload);
-        state.token = payload.token;
-        state.id = payload.id;
-        state.username = payload.username;
+        const { token, id, username } = initialState;
+        state.token = token;
+        state.id = id;
+        state.username = username;
       });
   },
 });

@@ -9,22 +9,21 @@ import Poster from './Poster';
 function Posts() {
   const dispatch = useDispatch();
 
-  const { token } = useSelector((state) => state.user);
+  const { id: userId } = useSelector((state) => state.user);
 
   const { posts } = useSelector((state) => state.data);
 
   const visbilityPost = useSelector((store) => store.visability.poster);
 
   useEffect(() => {
-    console.log('useEffect token');
-    dispatch(fetchDataThunk(token));
+    dispatch(fetchDataThunk());
 
     const intervalId = setInterval(() => {
-      dispatch(fetchDataThunk(token));
+      dispatch(fetchDataThunk());
     }, 5000);
 
     return () => clearInterval(intervalId);
-  }, [token]);
+  }, [userId]);
 
   return (
     <>
@@ -43,7 +42,6 @@ function Posts() {
         </Row>
       </Container>
       {' '}
-
     </>
   );
 }

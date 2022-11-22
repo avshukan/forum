@@ -34,14 +34,7 @@ function Signup() {
     const response = await signup({ username, email, password });
 
     if (response.status === 201) {
-      // const { token, id, username } = await response.json();
-      const { token, id } = await response.json();
-      localStorage.setItem('token', token);
-      localStorage.setItem('id', id);
-      localStorage.setItem('username', username);
       navigate('/');
-      // save token, id & username into store
-      // dispatch(hideCommenter());
     }
   };
 

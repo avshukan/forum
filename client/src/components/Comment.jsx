@@ -21,7 +21,7 @@ function Comment({ comment }) {
 
   const dispatch = useDispatch();
 
-  const { token, id: userId } = useSelector((state) => state.user);
+  const { id: userId } = useSelector((state) => state.user);
 
   const createdAtDate = moment(createdAt);
 
@@ -33,10 +33,10 @@ function Comment({ comment }) {
 
   const onDelete = (event) => {
     event.preventDefault();
-    return deleteComment({ token, postId, commentId: id })
+    return deleteComment({ token: null, postId, commentId: id })
       .then((response) => {
         if (response.status === 204) {
-          dispatch(fetchDataThunk(token));
+          dispatch(fetchDataThunk(null));
         }
       });
   };

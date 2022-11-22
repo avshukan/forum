@@ -7,17 +7,18 @@ import {
 import { createComment } from '../api';
 import fetchDataThunk from '../slices/fetchDataThunk';
 import { hideCommenter, showComments } from '../slices/visabilitySlice';
+import loggedSelector from '../slices/loggedSelector';
 
 function Commenter({ postId }) {
   const dispatch = useDispatch();
 
-  const { token } = useSelector((state) => state.user);
+  const isLogged = useSelector(loggedSelector);
 
   const [text, setText] = useState('');
 
   const refText = useRef();
 
-  const canComment = () => Boolean(token);
+  const canComment = () => isLogged();
 
   const onChangeText = (event) => {
     setText(event.target.value);
@@ -29,13 +30,13 @@ function Commenter({ postId }) {
       return;
     }
 
-    const response = await createComment({ token, postId, text });
+    const response = await createComment({ token: null, postId, text });
 
     if (response.status === 201) {
       setText('');
       dispatch(hideCommenter());
       dispatch(showComments({ postId }));
-      dispatch(fetchDataThunk(token));
+      dispatch(fetchDataThunk(null));
     }
   };
 

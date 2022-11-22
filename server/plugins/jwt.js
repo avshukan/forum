@@ -8,7 +8,7 @@ module.exports = fp(async (fastify, _opts) => {
     secret: JWT_KEY,
     cookie: {
       cookieName: 'token',
-      signed: false
+      signed: false,
     },
   });
 

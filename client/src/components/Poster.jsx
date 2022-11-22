@@ -6,11 +6,12 @@ import {
 import { createPost } from '../api';
 import fetchDataThunk from '../slices/fetchDataThunk';
 import { hidePoster } from '../slices/visabilitySlice';
+import loggedSelector from '../slices/loggedSelector';
 
 function Poster() {
   const dispatch = useDispatch();
 
-  const { token } = useSelector((state) => state.user);
+  const isLogged = useSelector(loggedSelector);
 
   const [header, setHeader] = useState('');
 
@@ -18,7 +19,7 @@ function Poster() {
 
   const headerRef = useRef();
 
-  const canPost = () => Boolean(token);
+  const canPost = () => isLogged();
 
   const onChangeHeader = (event) => {
     setHeader(event.target.value);
@@ -34,12 +35,12 @@ function Poster() {
       return;
     }
 
-    const response = await createPost({ token, header, text });
+    const response = await createPost({ token: null, header, text });
     if (response.status === 201) {
       setHeader('');
       setText('');
       dispatch(hidePoster());
-      dispatch(fetchDataThunk(token));
+      dispatch(fetchDataThunk());
     }
   };
 

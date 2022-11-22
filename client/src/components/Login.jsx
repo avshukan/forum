@@ -32,24 +32,12 @@ function Login() {
     event.preventDefault();
     // need to check password confirmation
     // need to check minimal length and email format
-    console.log('data', data);
     const { username, password } = data;
-    // const response = await login({ username, email, password });
-    console.log('username, password', username, password);
     const response = dispatch(loginThunk({ username, password }));
-
-    console.log('response + status', response, response.status);
-
     // if (response.status === 201) {
-    //   // const { token, id, username } = await response.json();
-    //   const { token, id } = await response.json();
-    //   localStorage.setItem('token', token);
-    //   localStorage.setItem('id', id);
-    //   localStorage.setItem('username', username);
-    //   redirect('/');
-    //   // save token, id & username into store
-    //   // dispatch(hideCommenter());
+    //   do something
     // }
+
     navigate('/');
   };
 

@@ -7,20 +7,23 @@ import CreatePostButton from './CreatePostButton';
 import LogoutButton from './LogoutButton';
 import SignupButton from './SignupButton';
 import LoginButton from './LoginButton';
+import loggedSelector from '../slices/loggedSelector';
 // import logo from './logo.svg';
 
 function Header() {
-  const { token, username } = useSelector((state) => state.user);
+  const { username } = useSelector((state) => state.user);
+
+  const isLogged = useSelector(loggedSelector);
 
   return (
     <Container fluid className="App-header-wrapper">
       <Navbar expand="lg" className="container App-header px-0">
-        {Boolean(token) && (
-        <Nav>
-          <NavItem>
-            <CreatePostButton />
-          </NavItem>
-        </Nav>
+        {isLogged() && (
+          <Nav>
+            <NavItem>
+              <CreatePostButton />
+            </NavItem>
+          </Nav>
         )}
         <Nav>
           <NavItem>
@@ -39,7 +42,7 @@ function Header() {
             </span>
           </NavItem>
         </Nav>
-        {Boolean(token)
+        {isLogged()
           && (
             <Nav>
               <NavItem>
@@ -47,14 +50,14 @@ function Header() {
               </NavItem>
             </Nav>
           )}
-        {!token && (
+        {!isLogged() && (
           <Nav>
             <NavItem>
               <SignupButton />
             </NavItem>
           </Nav>
         )}
-        {!token && (
+        {!isLogged() && (
           <Nav>
             <NavItem>
               <LoginButton />
