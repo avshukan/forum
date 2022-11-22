@@ -20,6 +20,6 @@ module.exports = fp(async (fastify, _opts) => {
       // cb(new Error('Not allowed'), false);
     },
     credentials: true,
-    methods: ['GET', 'PUT', 'POST'],
+    methods: ['GET', 'POST', 'DELETE'],
   });
 });

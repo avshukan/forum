@@ -3,7 +3,6 @@ const baseUrl = new URL(REACT_APP_API_URL, REACT_APP_API_BASE);
 
 const header = (token) => ({
   'Content-Type': 'application/json;charset=utf-8',
-  Authorization: `Bearer ${token}`,
 });
 
 export const login = (data) => {
@@ -30,7 +29,7 @@ export const getPosts = (token) => {
   const { href } = new URL('posts', baseUrl);
   return fetch(href, {
     credentials: 'include',
-    headers: token ? header(token) : { 'Content-Type': 'application/json;charset=utf-8' },
+    headers: { 'Content-Type': 'application/json;charset=utf-8' },
   });
 };
 
@@ -39,7 +38,7 @@ export const createPost = ({ token, ...data }) => {
   return fetch(href, {
     credentials: 'include',
     method: 'POST',
-    headers: header(token),
+    headers: { 'Content-Type': 'application/json;charset=utf-8' },
     body: JSON.stringify(data),
   });
 };
@@ -49,7 +48,7 @@ export const deletePost = ({ token, postId }) => {
   return fetch(href, {
     credentials: 'include',
     method: 'DELETE',
-    headers: header(token),
+    headers: { 'Content-Type': 'application/json;charset=utf-8' },
   });
 };
 
@@ -58,7 +57,7 @@ export const createComment = ({ token, postId, ...data }) => {
   return fetch(href, {
     credentials: 'include',
     method: 'POST',
-    headers: header(token),
+    headers: { 'Content-Type': 'application/json;charset=utf-8' },
     body: JSON.stringify(data),
   });
 };
@@ -68,6 +67,6 @@ export const deleteComment = ({ token, postId, commentId }) => {
   return fetch(href, {
     credentials: 'include',
     method: 'DELETE',
-    headers: header(token),
+    headers: { 'Content-Type': 'application/json;charset=utf-8' },
   });
 };
