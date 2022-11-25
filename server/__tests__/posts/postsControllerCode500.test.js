@@ -1,4 +1,3 @@
-const getUserIdByDb = require('../../helpers/getUserIdByDb');
 const ReplyBuilder = require('../../helpers/ReplyBuilder');
 const {
   getPosts, createPost, deletePost, createComment, deleteComment,
@@ -37,8 +36,7 @@ const serverErrorCases = [
 
 const serverErrorHandler = async ({ controller, request = {} }) => {
   const db = () => { throw new Error('test error'); };
-  const getUserId = getUserIdByDb(db);
-  const app = { db, getUserId };
+  const app = { db };
 
   const reply = new ReplyBuilder();
   await controller.call(app, request, reply);
@@ -52,5 +50,3 @@ const serverErrorHandler = async ({ controller, request = {} }) => {
 describe('bad cases with server error (500)', () => {
   test.each(serverErrorCases)('bad case: server error on $name', serverErrorHandler);
 });
-
-test.todo('test 500');

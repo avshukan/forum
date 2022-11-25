@@ -1,7 +1,6 @@
 const _ = require('lodash');
 const knex = require('knex');
 const knexfile = require('../../knexfile');
-const getUserIdByDb = require('../../helpers/getUserIdByDb');
 const getTablesLengthChecker = require('../../helpers/getTablesLengthChecker');
 const ReplyBuilder = require('../../helpers/ReplyBuilder');
 const { createComment, deleteComment } = require('../../controllers/postsController');
@@ -12,9 +11,7 @@ beforeEach(async () => {
   const db = knex(knexfile.test);
   await db.migrate.latest();
   await db.seed.run();
-  const getUserId = getUserIdByDb(db);
   app.db = db;
-  app.getUserId = getUserId;
 }, 60000);
 
 describe('postsController', () => {
