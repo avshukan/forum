@@ -55,14 +55,19 @@ async function createPost(request, reply) {
 
   try {
     const { user: { id } } = await request.jwtVerify();
+
+    if (!id) throw new Error();
+
     user.id = id;
   } catch ({ message }) {
     reply
       .code(401)
       .send({
         error: 'Not authorized',
-        detail: { message },
+        detail: { message: 'bad token' },
       });
+
+    return;
   }
 
   try {
@@ -114,14 +119,19 @@ async function deletePost(request, reply) {
 
   try {
     const { user: { id } } = await request.jwtVerify();
+
+    if (!id) throw new Error();
+
     user.id = id;
   } catch ({ message }) {
     reply
       .code(401)
       .send({
         error: 'Not authorized',
-        detail: { message },
+        detail: { message: 'bad token' },
       });
+
+    return;
   }
 
   try {
@@ -189,14 +199,19 @@ async function createComment(request, reply) {
 
   try {
     const { user: { id } } = await request.jwtVerify();
+
+    if (!id) throw new Error();
+
     user.id = id;
   } catch ({ message }) {
     reply
       .code(401)
       .send({
         error: 'Not authorized',
-        detail: { message },
+        detail: { message: 'bad token' },
       });
+
+    return;
   }
 
   try {
@@ -261,14 +276,19 @@ async function deleteComment(request, reply) {
 
   try {
     const { user: { id } } = await request.jwtVerify();
+
+    if (!id) throw new Error();
+
     user.id = id;
   } catch ({ message }) {
     reply
       .code(401)
       .send({
         error: 'Not authorized',
-        detail: { message },
+        detail: { message: 'bad token' },
       });
+
+    return;
   }
 
   try {

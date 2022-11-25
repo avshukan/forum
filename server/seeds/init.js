@@ -18,6 +18,7 @@ const seed = async (knex) => {
     genSaltSync(saltLength),
     genSaltSync(saltLength),
   ];
+
   // Inserts new entries
   const userIds = await knex('users')
     .returning('id')

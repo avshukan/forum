@@ -2,6 +2,7 @@ class ReplyBuilder {
   constructor(statusCode = 200, payload = null) {
     this.statusCode = statusCode;
     this.payload = payload;
+    this.headers = {};
   }
 
   code(value) {
@@ -12,10 +13,14 @@ class ReplyBuilder {
     return this;
   }
 
+  header(key, value) {
+    this.headers[key] = value;
+  }
+
   send(value) {
     this.payload = value;
     return this;
   }
 }
 
-module.exports = { ReplyBuilder };
+module.exports = ReplyBuilder;
