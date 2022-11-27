@@ -1,3 +1,4 @@
+const yup = require('yup');
 const bcrypt = require('bcrypt');
 
 const { FRONTEND_ORIGIN } = process.env;
@@ -6,9 +7,54 @@ async function signup(request, reply) {
   const { username, email, password } = request.body;
 
   try {
+    yup
+      .object({
+        username: yup.string()
+          .required('username is required')
+          .min(3, 'username length have to be betweeen 3 and 20')
+          .max(20, 'username length have to be betweeen 3 and 20'),
+        email: yup.string()
+          .email()
+          .required('email is required'),
+        password: yup.string()
+          .required('text is required')
+          .min(6, 'min password length is 6')
+          .max(100, 'max password length is 100'),
+      })
+      .validateSync({ username, email, password });
+  } catch (error) {
+    this.log.error({ message: error.errors });
+
+    reply
+      .code(400)
+      .send({
+        error: 'Bad data',
+        detail: { message: error.errors },
+      });
+
+    return;
+  }
+
+  try {
+    const users = await this.db('users')
+      .where('username', username);
+
+    if (users.length > 0) {
+      this.log.error({ message: `User "${username}" already exists` });
+
+      reply
+        .code(409)
+        .send({
+          error: 'Conflict',
+          detail: { message: 'username already exists', username },
+        });
+
+      return;
+    }
+
     const salt = bcrypt.genSaltSync();
     const passhash = bcrypt.hashSync(password, salt);
-    const [id] = await this.db('users')
+    const [{ id }] = await this.db('users')
       .returning('id')
       .insert({
         username, email, salt, passhash,
@@ -16,8 +62,14 @@ async function signup(request, reply) {
     const token = this.jwt.sign({ user: { id, username } });
 
     reply
+      .header('Access-Control-Allow-Origin', FRONTEND_ORIGIN);
+
+    reply
+      .setCookie('token', token, { path: '/' });
+
+    reply
       .code(201)
-      .send({ token, id, username });
+      .send({ id, username });
 
     return;
   } catch ({ message }) {
@@ -27,7 +79,7 @@ async function signup(request, reply) {
       .code(500)
       .send({
         error: 'Server error',
-        detail: message,
+        detail: { message },
       });
   }
 }
@@ -79,14 +131,14 @@ async function login(request, reply) {
       .send({ id, username });
 
     return;
-  } catch (error) {
-    this.log.error({ error });
+  } catch ({ message }) {
+    this.log.error({ message });
 
     reply
       .code(500)
       .send({
         error: 'Server error',
-        detail: error.message,
+        detail: { message },
       });
   }
 }

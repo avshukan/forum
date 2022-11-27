@@ -2,7 +2,7 @@ class ReplyBuilder {
   constructor(statusCode = 200, payload = null) {
     this.statusCode = statusCode;
     this.payload = payload;
-    this.headers = {};
+    this.headers = [];
   }
 
   code(value) {
@@ -14,7 +14,11 @@ class ReplyBuilder {
   }
 
   header(key, value) {
-    this.headers[key] = value;
+    this.headers.push([key, value]);
+  }
+
+  setCookie(key, value) {
+    this.header('set-Cookie', `${key}=${value}`);
   }
 
   send(value) {
