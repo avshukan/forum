@@ -39,5 +39,4 @@ module.exports = fp(async (fastify, _opts) => {
     // facebook redirect here after the user login
     callbackUri: 'http://localhost:3000/login/facebook/callback',
   });
-
 });
