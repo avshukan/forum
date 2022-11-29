@@ -88,9 +88,11 @@ async function login(request, reply) {
   const { username, password } = request.body;
 
   try {
+    this.log.info({ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: '1' });
     const users = await this.db('users')
       .select('id', 'salt', 'passhash')
       .where('username', username);
+    this.log.info({ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: '2' });
 
     if (users.length === 0) {
       this.log.error({ message: `User "${username}" not found` });
@@ -104,8 +106,10 @@ async function login(request, reply) {
 
       return;
     }
+    this.log.info({ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: '3' });
 
     const [{ id, salt, passhash }] = users;
+    this.log.info({ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: '4' });
     if (passhash !== bcrypt.hashSync(password, salt)) {
       this.log.error({ message: `Wrong password for user "${username}"` });
 
@@ -119,7 +123,10 @@ async function login(request, reply) {
       return;
     }
 
+    this.log.info({ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: '5' });
+    this.log.info({ bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb: { user: { id, username } } });
     const token = this.jwt.sign({ user: { id, username } });
+    this.log.info({ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: '6' });
 
     reply
       .header('Access-Control-Allow-Origin', FRONTEND_ORIGIN);
