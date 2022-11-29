@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import {
   Button, Col, Container, Form, Row,
 } from 'react-bootstrap';
-// import { login } from '../api';
 import { useDispatch } from 'react-redux';
 import Title from './Title';
 import loginThunk from '../slices/loginThunk';
+import AuthGoogle from './AuthGoogle';
 
 function Login() {
   const dispatch = useDispatch();
@@ -89,6 +89,11 @@ function Login() {
                 && <div id="b" className="invalid-feedback active show d-block">
                 {signupError}</div>} */}
             </Form>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <AuthGoogle />
           </Col>
         </Row>
       </Container>

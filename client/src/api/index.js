@@ -23,6 +23,11 @@ export const signup = (data) => {
   return fetch(href, fetchOptions('POST', data));
 };
 
+export const googleSigntoken = (data) => {
+  const { href } = new URL(['auth', 'google', 'signtoken'].join('/'), baseUrl);
+  return fetch(href, fetchOptions('POST', data));
+};
+
 export const getPosts = () => {
   const { href } = new URL('posts', baseUrl);
   return fetch(href, fetchOptions());

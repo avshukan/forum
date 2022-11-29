@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import loginThunk from './loginThunk';
+import googleThunk from './googleThunk';
 
 const initialState = {
   id: 0,
@@ -25,6 +26,18 @@ const userSlice = createSlice({
         state.username = username;
       })
       .addCase(loginThunk.rejected, (state, action) => {
+        const { payload } = action;
+        console.log('rejected payload', payload);
+        const { id, username } = initialState;
+        state.id = id;
+        state.username = username;
+      })
+      .addCase(googleThunk.fulfilled, (state, action) => {
+        const { payload: { id, username } } = action;
+        state.id = id;
+        state.username = username;
+      })
+      .addCase(googleThunk.rejected, (state, action) => {
         const { payload } = action;
         console.log('rejected payload', payload);
         const { id, username } = initialState;
