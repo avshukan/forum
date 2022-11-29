@@ -1,5 +1,6 @@
 const yup = require('yup');
 const bcrypt = require('bcrypt');
+const verifyGoogleToken = require('../helpers/verifyGoogleToken');
 
 const { FRONTEND_ORIGIN } = process.env;
 
@@ -148,9 +149,28 @@ async function login(request, reply) {
         detail: { message },
       });
   }
-}
+};
+
+async function googleAuth(request, reply) {
+  const { body: { idToken } } = request;
+
+  verify(idToken)
+    .then((data) => {
+
+      this.log.info('data idToken', data);
+
+      reply
+        .header('Access-Control-Allow-Origin', FRONTEND_ORIGIN);
+
+      reply
+        .send({ message: 'Hello, Callback!' });
+    })
+    .catch(console.error);
+
+};
 
 module.exports = {
   signup,
   login,
+  googleAuth,
 };

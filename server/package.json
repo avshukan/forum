@@ -41,6 +41,7 @@
     "fastify-bcrypt": "^1.0.1",
     "fastify-cli": "^4.4.0",
     "fastify-plugin": "^3.0.0",
+    "google-auth-library": "^8.7.0",
     "knex": "^2.3.0",
     "lodash": "^4.17.21",
     "pg": "^8.8.0",
