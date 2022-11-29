@@ -3,7 +3,7 @@
  * @returns { Promise<void> }
  */
 const up = (knex) => knex.schema.table('users', (table) => {
-    table.string('usertype', 20).notNullable().defaultTo('local');
+  table.string('usertype', 20).notNullable().defaultTo('local');
 });
 
 /**
@@ -11,7 +11,7 @@ const up = (knex) => knex.schema.table('users', (table) => {
  * @returns { Promise<void> }
  */
 const down = (knex) => knex.schema.table('users', (table) => {
-    table.dropColumn('usertype');
+  table.dropColumn('usertype');
 });
 
 exports.up = up;

@@ -3,7 +3,7 @@
  * @returns { Promise<void> }
  */
 const up = (knex) => knex.schema.table('users', (table) => {
-    table.string('picture_url', 255);
+  table.string('picture_url', 255);
 });
 
 /**
@@ -11,7 +11,7 @@ const up = (knex) => knex.schema.table('users', (table) => {
  * @returns { Promise<void> }
  */
 const down = (knex) => knex.schema.table('users', (table) => {
-    table.dropColumn('picture_url');
+  table.dropColumn('picture_url');
 });
 
 exports.up = up;

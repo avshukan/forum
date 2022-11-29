@@ -1,3 +1,5 @@
+const { googleAuth } = require('../../../controllers/authController');
+
 const { FRONTEND_ORIGIN } = process.env;
 
 async function auth(fastify, _opts) {
@@ -13,7 +15,7 @@ async function auth(fastify, _opts) {
       .send({ message: 'Hello, Callback!' });
   });
 
-  fastify.post('/signtoken',);
+  fastify.post('/signtoken', googleAuth);
 }
 
 module.exports = auth;

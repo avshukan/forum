@@ -3,7 +3,7 @@
  * @returns { Promise<void> }
  */
 const up = (knex) => knex.schema.table('users', (table) => {
-    table.integer('outer_id');
+  table.string('outer_id', 30);
 });
 
 /**
@@ -11,7 +11,7 @@ const up = (knex) => knex.schema.table('users', (table) => {
  * @returns { Promise<void> }
  */
 const down = (knex) => knex.schema.table('users', (table) => {
-    table.dropColumn('outer_id');
+  table.dropColumn('outer_id');
 });
 
 exports.up = up;

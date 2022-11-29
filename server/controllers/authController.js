@@ -73,7 +73,8 @@ async function signup(request, reply) {
       .send({ id, username });
 
     return;
-  } catch ({ message }) {
+  } catch (error) {
+    const { message } = error;
     this.log.error({ message });
 
     reply
@@ -89,11 +90,9 @@ async function login(request, reply) {
   const { username, password } = request.body;
 
   try {
-    this.log.info({ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: '1' });
     const users = await this.db('users')
       .select('id', 'salt', 'passhash')
       .where('username', username);
-    this.log.info({ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: '2' });
 
     if (users.length === 0) {
       this.log.error({ message: `User "${username}" not found` });
@@ -107,10 +106,8 @@ async function login(request, reply) {
 
       return;
     }
-    this.log.info({ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: '3' });
 
     const [{ id, salt, passhash }] = users;
-    this.log.info({ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: '4' });
     if (passhash !== bcrypt.hashSync(password, salt)) {
       this.log.error({ message: `Wrong password for user "${username}"` });
 
@@ -124,10 +121,7 @@ async function login(request, reply) {
       return;
     }
 
-    this.log.info({ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: '5' });
-    this.log.info({ bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb: { user: { id, username } } });
     const token = this.jwt.sign({ user: { id, username } });
-    this.log.info({ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: '6' });
 
     reply
       .header('Access-Control-Allow-Origin', FRONTEND_ORIGIN);
@@ -149,25 +143,76 @@ async function login(request, reply) {
         detail: { message },
       });
   }
-};
+}
 
 async function googleAuth(request, reply) {
   const { body: { idToken } } = request;
+  let data;
 
-  verify(idToken)
-    .then((data) => {
+  try {
+    data = await verifyGoogleToken(idToken);
+  } catch ({ message }) {
+    reply
+      .code(401)
+      .send({
+        error: 'Not authorized',
+        detail: { message: 'bad token' },
+      });
 
-      this.log.info('data idToken', data);
+    return;
+  }
+
+  try {
+    const users = await this.db('users')
+      .where({ username: data.username, usertype: 'google' });
+    const user = {};
+
+    if (users.length === 0) {
+      const {
+        googleId, username, email, picture,
+      } = data;
+      const [{ id }] = await this.db('users')
+        .returning('id')
+        .insert({
+          username, email, salt: '-', passhash: '-', usertype: 'google', outer_id: googleId, picture_url: picture,
+        });
+      user.id = id;
+      user.username = username;
 
       reply
-        .header('Access-Control-Allow-Origin', FRONTEND_ORIGIN);
+        .code(201);
+    } else {
+      const [{ id, username }] = users;
+      user.id = id;
+      user.username = username;
 
       reply
-        .send({ message: 'Hello, Callback!' });
-    })
-    .catch(console.error);
+        .code(200);
+    }
 
-};
+    const token = this.jwt.sign({ user });
+
+    reply
+      .header('Access-Control-Allow-Origin', FRONTEND_ORIGIN);
+
+    reply
+      .setCookie('token', token, { path: '/' });
+
+    reply
+      .send({ ...user });
+
+    return;
+  } catch ({ message }) {
+    this.log.error({ message });
+
+    reply
+      .code(500)
+      .send({
+        error: 'Server error',
+        detail: { message },
+      });
+  }
+}
 
 module.exports = {
   signup,
