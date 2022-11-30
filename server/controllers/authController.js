@@ -70,7 +70,7 @@ async function signup(request, reply) {
 
     reply
       .code(201)
-      .send({ id, username });
+      .send({ id, username, picture: '' });
 
     return;
   } catch (error) {
@@ -107,7 +107,9 @@ async function login(request, reply) {
       return;
     }
 
-    const [{ id, salt, passhash }] = users;
+    const [{
+      id, salt, passhash, picture_url: picture,
+    }] = users;
     if (passhash !== bcrypt.hashSync(password, salt)) {
       this.log.error({ message: `Wrong password for user "${username}"` });
 
@@ -130,7 +132,7 @@ async function login(request, reply) {
       .setCookie('token', token, { path: '/' });
 
     reply
-      .send({ id, username });
+      .send({ id, username, picture });
 
     return;
   } catch ({ message }) {
@@ -178,13 +180,15 @@ async function googleAuth(request, reply) {
         });
       user.id = id;
       user.username = username;
+      user.picture = picture;
 
       reply
         .code(201);
     } else {
-      const [{ id, username }] = users;
+      const [{ id, username, picture_url: picture }] = users;
       user.id = id;
       user.username = username;
+      user.picture = picture;
 
       reply
         .code(200);

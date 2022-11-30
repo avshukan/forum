@@ -11,7 +11,7 @@ import loggedSelector from '../slices/loggedSelector';
 // import logo from './logo.svg';
 
 function Header() {
-  const { username } = useSelector((state) => state.user);
+  const { username, picture } = useSelector((state) => state.user);
 
   const isLogged = useSelector(loggedSelector);
 
@@ -38,7 +38,7 @@ function Header() {
         <Nav>
           <NavItem>
             <span className="px-3">
-              <img src={username ? '/images/default.jpg' : '/images/unknown.png'} className="img-fluid avatar-header rounded-circle shadow" alt="img" />
+              <img src={picture} className="img-fluid avatar-header rounded-circle shadow" alt="img" />
             </span>
           </NavItem>
         </Nav>
