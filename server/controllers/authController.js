@@ -2,7 +2,7 @@ const yup = require('yup');
 const bcrypt = require('bcrypt');
 const verifyGoogleToken = require('../helpers/verifyGoogleToken');
 
-const { FRONTEND_ORIGIN } = process.env;
+const { FRONTEND_ORIGIN, GITHUB_ID, GITHUB_SECRET } = process.env;
 
 async function signup(request, reply) {
   const { username, email, password } = request.body;
@@ -147,6 +147,93 @@ async function login(request, reply) {
   }
 }
 
+async function githubAuth(request, reply) {
+  const { body: { code } } = request;
+  let data;
+
+  try {
+    const url = new URL('/login/oauth/access_token', 'https://github.com');
+    url.searchParams.set('client_id', GITHUB_ID);
+    url.searchParams.set('client_secret', GITHUB_SECRET);
+    url.searchParams.set('code', code);
+
+    const { access_token: accessToken } = await fetch(url, {
+      method: 'POST',
+      headers: { Accept: 'application/json' },
+    })
+      .then((response) => response.json());
+
+    data = await fetch('https://api.github.com/user', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+      .then((response) => response.json());
+  } catch ({ message }) {
+    this.log.error({ message });
+
+    reply
+      .code(401)
+      .send({
+        error: 'Not authorized',
+        detail: { message: 'bad token' },
+      });
+
+    return;
+  }
+
+  try {
+    const users = await this.db('users')
+      .where({ outer_id: data.id, usertype: 'github' });
+    const user = {};
+
+    if (users.length === 0) {
+      const {
+        id: githubId, name, email, avatar_url: avatar,
+      } = data;
+      const [{ id }] = await this.db('users')
+        .returning('id')
+        .insert({
+          username: name, email, salt: '-', passhash: '-', usertype: 'github', outer_id: githubId, picture_url: avatar,
+        });
+      user.id = id;
+      user.username = name;
+      user.picture = avatar;
+
+      reply
+        .code(201);
+    } else {
+      const [{ id, username, picture_url: picture }] = users;
+      user.id = id;
+      user.username = username;
+      user.picture = picture;
+
+      reply
+        .code(200);
+    }
+
+    const token = this.jwt.sign({ user });
+
+    reply
+      .header('Access-Control-Allow-Origin', FRONTEND_ORIGIN);
+
+    reply
+      .setCookie('token', token, { path: '/' });
+
+    reply
+      .send({ ...user });
+
+    return;
+  } catch ({ message }) {
+    this.log.error({ message });
+
+    reply
+      .code(500)
+      .send({
+        error: 'Server error',
+        detail: { message },
+      });
+  }
+}
+
 async function googleAuth(request, reply) {
   const { body: { idToken } } = request;
   let data;
@@ -166,7 +253,7 @@ async function googleAuth(request, reply) {
 
   try {
     const users = await this.db('users')
-      .where({ username: data.username, usertype: 'google' });
+      .where({ outer_id: data.googleId, usertype: 'google' });
     const user = {};
 
     if (users.length === 0) {
@@ -221,5 +308,6 @@ async function googleAuth(request, reply) {
 module.exports = {
   signup,
   login,
+  githubAuth,
   googleAuth,
 };

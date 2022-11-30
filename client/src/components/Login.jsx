@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import Title from './Title';
 import loginThunk from '../slices/loginThunk';
 import AuthGoogle from './AuthGoogle';
+import AuthGithub from './AuthGithub';
 
 function Login() {
   const dispatch = useDispatch();
@@ -92,6 +93,7 @@ function Login() {
               </Form>
               <h5 className="my-3 text-center my-3">OR</h5>
               <AuthGoogle />
+              <AuthGithub />
             </div>
           </Col>
         </Row>

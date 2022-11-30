@@ -28,6 +28,11 @@ export const googleSigntoken = (data) => {
   return fetch(href, fetchOptions('POST', data));
 };
 
+export const githubSigntoken = (data) => {
+  const { href } = new URL(['auth', 'github', 'signtoken'].join('/'), baseUrl);
+  return fetch(href, fetchOptions('POST', data));
+};
+
 export const getPosts = () => {
   const { href } = new URL('posts', baseUrl);
   return fetch(href, fetchOptions());

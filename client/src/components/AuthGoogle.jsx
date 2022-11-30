@@ -13,8 +13,8 @@ function AuthGoogle() {
   const navigate = useNavigate();
 
   const onSuccess = (googleUser) => {
-    // var profile = googleUser.getBasicProfile();
     googleUser.disconnect();
+
     const { id_token: idToken } = googleUser.getAuthResponse();
     dispatch(googleThunk({ idToken }));
     // const response = dispatch(loginThunk({ username, password }));
