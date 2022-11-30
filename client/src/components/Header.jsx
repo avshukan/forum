@@ -8,7 +8,6 @@ import LogoutButton from './LogoutButton';
 import SignupButton from './SignupButton';
 import LoginButton from './LoginButton';
 import loggedSelector from '../slices/loggedSelector';
-import GoogleSign from './GoogleSign';
 // import logo from './logo.svg';
 
 function Header() {
@@ -29,11 +28,6 @@ function Header() {
         <Nav>
           <NavItem>
             <NavLink href="https://github.com/avshukan/forum">Repo</NavLink>
-          </NavItem>
-        </Nav>
-        <Nav>
-          <NavItem>
-            <GoogleSign />
           </NavItem>
         </Nav>
         <Nav className="ms-auto">
