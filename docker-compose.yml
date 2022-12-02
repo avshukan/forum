@@ -8,6 +8,8 @@ services:
       args:
         REACT_APP_API_URL: ${REACT_APP_API_URL}
         REACT_APP_API_BASE: ${REACT_APP_API_BASE}
+        REACT_APP_GOOGLE_ID: ${GOOGLE_ID}
+        REACT_APP_GITHUB_ID: ${GITHUB_ID}
     ports:
       - '3000:3000'
     # restart: always
@@ -36,9 +38,12 @@ services:
         POSTGRES_USERNAME: ${POSTGRES_USERNAME}
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
         PORT: ${PORT}
-        CORS_HOSTNAME: ${CORS_HOSTNAME}
         FRONTEND_ORIGIN: ${FRONTEND_ORIGIN}
         JWT_KEY: ${JWT_KEY}
+        GOOGLE_ID: ${GOOGLE_ID}
+        GOOGLE_SECRET: ${GOOGLE_SECRET}
+        GITHUB_ID: ${GITHUB_ID}
+        GITHUB_SECRET: ${GITHUB_SECRET}
     ports:
       - '5000:5000'
     # restart: always

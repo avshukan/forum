@@ -6,6 +6,7 @@ import Footer from './Footer';
 import Forum from './Forum';
 import Signup from './Signup';
 import Login from './Login';
+import CallbackGithub from './CallbackGithub';
 
 function Main() {
   return (
@@ -15,6 +16,7 @@ function Main() {
         <Routes>
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/github" element={<CallbackGithub />} />
           <Route path="/" element={<Forum />} />
         </Routes>
         <Footer />
