@@ -15,3 +15,6 @@ lint:
 
 test:
 	npm run test
+
+diff_without_build:
+	git diff -- ':!./client/build'
