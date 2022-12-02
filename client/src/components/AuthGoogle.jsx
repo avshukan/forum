@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { gapi } from 'gapi-script';
-import GoogleLogin from 'react-google-login';
+import { Button } from 'react-bootstrap';
+import { FaGoogle } from 'react-icons/fa';
 import googleThunk from '../slices/googleThunk';
 
 const { REACT_APP_GOOGLE_ID } = process.env;
@@ -12,7 +13,10 @@ function AuthGoogle() {
 
   const navigate = useNavigate();
 
-  const onSuccess = (googleUser) => {
+  const signIn = async () => {
+    const auth2 = gapi.auth2.getAuthInstance();
+    const googleUser = await auth2.signIn();
+
     googleUser.disconnect();
 
     const { id_token: idToken } = googleUser.getAuthResponse();
@@ -22,10 +26,6 @@ function AuthGoogle() {
     //   do something
     // }
     navigate('/');
-  };
-
-  const onFailure = (error) => {
-    console.log(error);
   };
 
   useEffect(() => {
@@ -40,16 +40,15 @@ function AuthGoogle() {
   });
 
   return (
-    <div className="text-center">
-      <GoogleLogin
-        clientId={REACT_APP_GOOGLE_ID}
-        onSuccess={onSuccess}
-        onFailure={onFailure}
-        isSignedIn
-      >
-        {/* <FontAwesome name='google' /> */}
-        <span> Login with Google</span>
-      </GoogleLogin>
+    <div className="text-center my-3">
+      <div className="text-center my-3">
+        <Button onClick={signIn} variant="light">
+          <div className="d-inline-flex p-2 me-2">
+            <FaGoogle />
+          </div>
+          <span className="p-2">Login with Google</span>
+        </Button>
+      </div>
     </div>
   );
 }

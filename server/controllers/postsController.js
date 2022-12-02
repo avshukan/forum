@@ -40,6 +40,8 @@ async function getPosts(request, reply) {
 
     return;
   } catch (error) {
+    this.log.error({ error: error.message });
+
     reply
       .code(500)
       .send({
@@ -104,6 +106,8 @@ async function createPost(request, reply) {
 
     return;
   } catch (error) {
+    this.log.error({ error: error.message });
+
     reply
       .code(500)
       .send({
@@ -183,6 +187,8 @@ async function deletePost(request, reply) {
 
     return;
   } catch (error) {
+    this.log.error({ error: error.message });
+
     reply
       .code(500)
       .send({
@@ -261,6 +267,8 @@ async function createComment(request, reply) {
 
     return;
   } catch (error) {
+    this.log.error({ error: error.message });
+
     reply
       .code(500)
       .send({
@@ -352,6 +360,8 @@ async function deleteComment(request, reply) {
 
     return;
   } catch (error) {
+    this.log.error({ error: error.message });
+
     reply
       .code(500)
       .send({

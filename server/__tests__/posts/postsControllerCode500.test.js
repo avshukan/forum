@@ -36,7 +36,10 @@ const serverErrorCases = [
 
 const serverErrorHandler = async ({ controller, request = {} }) => {
   const db = () => { throw new Error('test error'); };
-  const app = { db };
+  const log = {
+    error: () => { },
+  };
+  const app = { db, log };
 
   const reply = new ReplyBuilder();
   await controller.call(app, request, reply);

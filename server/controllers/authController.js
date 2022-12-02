@@ -167,6 +167,8 @@ async function githubAuth(request, reply) {
       headers: { Authorization: `Bearer ${accessToken}` },
     })
       .then((response) => response.json());
+
+    if (!data.id) throw new Error(data.message);
   } catch ({ message }) {
     this.log.error({ message });
 
@@ -181,6 +183,7 @@ async function githubAuth(request, reply) {
   }
 
   try {
+    this.log.info({ data });
     const users = await this.db('users')
       .where({ outer_id: data.id, usertype: 'github' });
     const user = {};
