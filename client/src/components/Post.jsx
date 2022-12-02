@@ -11,11 +11,14 @@ import Commenter from './Commenter';
 import CommentsCounter from './CommentsCounter';
 import { hidePoster, showCommenter } from '../slices/visabilitySlice';
 
+const defaultPicture = '/images/unknown.png';
+
 function Post({ post }) {
   const {
     id,
     user_id: postUserId,
     username: postUsername,
+    picture,
     header,
     text,
     created_at: createdAt,
@@ -55,7 +58,7 @@ function Post({ post }) {
       <div className="d-flex justify-content-between">
         <div className="d-flex align-items-center">
           <span className="pe-3">
-            <img src="images/default.jpg" className="img-fluid avatar-post rounded-circle shadow" alt="img" />
+            <img src={picture ?? defaultPicture} className="img-fluid avatar-post rounded-circle shadow" alt="img" />
           </span>
           <div className="d-flex flex-column">
             <h6 className="mb-0"><span className="media-heading text-dark">{postUsername}</span></h6>
@@ -93,6 +96,7 @@ Post.propTypes = {
     id: PropTypes.number,
     user_id: PropTypes.number,
     username: PropTypes.string,
+    picture: PropTypes.string,
     header: PropTypes.string,
     text: PropTypes.string,
     created_at: PropTypes.string,

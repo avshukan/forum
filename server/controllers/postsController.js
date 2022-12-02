@@ -1,5 +1,6 @@
 const yup = require('yup');
 const getUsernameById = require('../helpers/getUsernameById');
+const getPictureById = require('../helpers/getPictureById');
 
 const { FRONTEND_ORIGIN } = process.env;
 
@@ -22,6 +23,7 @@ async function getPosts(request, reply) {
       ...post,
       user_id: postUserId,
       username: getUsernameById(users, postUserId),
+      picture: getPictureById(users, postUserId),
       comments: comments
         .filter(({ post_id: postId }) => post.id === postId)
         .filter(({ status }) => (status === 'actual' || postUserId === user.id))
@@ -29,6 +31,7 @@ async function getPosts(request, reply) {
           ...comment,
           user_id: commentUserId,
           username: getUsernameById(users, commentUserId),
+          picture: getPictureById(users, commentUserId),
         })),
     }));
 
